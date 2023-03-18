@@ -1,0 +1,32 @@
+package com.csg.codeit.model
+
+import com.csg.codeit.checker.Expression
+
+interface RequestPayload {
+    fun name(): String = toString()
+}
+
+data class ChallengeRequest(val expression: Expression) : RequestPayload
+
+data class ChallengeResult(val score: Int = 0, val message: String = "") {
+    operator fun plus(another: ChallengeResult) =
+        copy(score = score + another.score, message = message)
+}
+
+interface ChallengeLevel {
+    val difficulty: Int
+}
+
+typealias ChallengeRun = (ChallengeRequest) -> ChallengeResponse?
+
+interface Checker {
+    fun check(eval: ChallengeRun): ChallengeResult
+}
+
+interface EvaluatorService {
+    fun evaluateTeam(evaluatorDto: TeamEvaluatorDto): ChallengeResult
+}
+
+data class EvaluationRequest(val runId: String, val teamUrl: String, val callbackUrl: String)
+
+data class EvaluationResultRequest(val runId: String, val score: Int, val message: String) : RequestPayload
