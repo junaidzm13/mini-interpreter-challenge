@@ -18,11 +18,15 @@ class CoordinatorService(
 ) {
     private val logger: Logger = LoggerFactory.getLogger(CoordinatorService::class.java)
 
-    operator fun invoke(evaluationRequest: EvaluationRequest) {
-        val result = evaluatorService.evaluateTeam(evaluationRequest.toTeamEvaluatorDto())
+    operator fun invoke(evaluationRequest: EvaluationRequest): EvaluationResultRequest {
+        return evaluatorService.evaluateTeam(evaluationRequest.toTeamEvaluatorDto())
             .let { EvaluationResultRequest(evaluationRequest.runId, it.score, it.message) }
+            .also { postResultToEvaluator(it, evaluationRequest.callbackUrl) }
+    }
+
+    private fun postResultToEvaluator(result: EvaluationResultRequest, url: String) {
         try {
-            webClient.postJson(evaluationRequest.callbackUrl.toHttpUrl(), result) {
+            webClient.postJson(url.toHttpUrl(), result) {
                 it.addHeader("Authorization", appConfig.bearerToken)
             }?.also { logger.info("Notified coordinator with: $result") }
                 ?: logger.warn("Error notifying coordinator with: $result")

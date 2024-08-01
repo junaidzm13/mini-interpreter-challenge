@@ -2,19 +2,13 @@ package com.csg.codeit.model
 
 import com.csg.codeit.checker.Expression
 
-interface RequestPayload {
-    fun name(): String = toString()
-}
+interface RequestPayload
 
 data class ChallengeRequest(val expression: Expression) : RequestPayload
 
 data class ChallengeResult(val score: Int = 0, val message: String = "") {
     operator fun plus(another: ChallengeResult) =
-        copy(score = score + another.score, message = message)
-}
-
-interface ChallengeLevel {
-    val difficulty: Int
+        copy(score = score + another.score, message = message.ifEmpty { another.message })
 }
 
 typealias ChallengeRun = (ChallengeRequest) -> ChallengeResponse?
