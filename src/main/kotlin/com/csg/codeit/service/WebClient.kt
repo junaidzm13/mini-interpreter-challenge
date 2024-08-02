@@ -5,7 +5,9 @@ import com.csg.codeit.model.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.springframework.stereotype.Component
 
+@Component
 class WebClient(private val httpClient: OkHttpClient) {
 
     fun postJson(url: HttpUrl, request: RequestPayload, modifier: (Request.Builder) -> Request.Builder = { it }): Response? =
