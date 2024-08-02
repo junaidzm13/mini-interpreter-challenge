@@ -1,30 +1,33 @@
 package com.csg.codeit.checker
 
-interface TestCase<R> {
-    val expression: Expression
+import  com.csg.codeit.model.Output
+
+interface TestCase {
+    val expressions: List<String>
     val difficulty: Difficulty
-    val result: R?
+    val output: Output
 }
-data class EasyTestCase<R>(
-    override val expression: Expression,
-    override val result: R?
-) : TestCase<R> {
+
+data class EasyTestCase(
+    override val expressions: List<String>,
+    override val output: Output
+) : TestCase {
     override val difficulty: Difficulty
         get() = Difficulty.Easy
 }
 
-data class IntermediateTestCase<R>(
-    override val expression: Expression,
-    override val result: R?
-) : TestCase<R> {
+data class IntermediateTestCase(
+    override val expressions: List<String>,
+    override val output: Output
+) : TestCase {
     override val difficulty: Difficulty
         get() = Difficulty.Intermediate
 }
 
-data class HardTestCase<R>(
-    override val expression: Expression,
-    override val result: R?
-) : TestCase<R> {
+data class HardTestCase(
+    override val expressions: List<String>,
+    override val output: Output
+) : TestCase {
     override val difficulty: Difficulty
         get() = Difficulty.Hard
 }

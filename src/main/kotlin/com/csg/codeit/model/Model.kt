@@ -1,10 +1,8 @@
 package com.csg.codeit.model
 
-import com.csg.codeit.checker.Expression
-
 interface RequestPayload
 
-data class ChallengeRequest(val expression: Expression) : RequestPayload
+data class ChallengeRequest(val expressions: List<String>) : RequestPayload
 
 data class ChallengeResult(val score: Int = 0, val message: String = "") {
     operator fun plus(another: ChallengeResult) =

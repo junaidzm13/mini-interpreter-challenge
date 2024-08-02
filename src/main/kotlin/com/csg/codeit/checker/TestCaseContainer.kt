@@ -1,7 +1,7 @@
 package com.csg.codeit.checker
 
 class TestCaseContainer {
-    fun getTestCases(): List<TestCase<out Any>> {
+    fun getTestCases(): List<TestCase> {
         return easyTestCases.shuffled().take(Difficulty.Easy.numCases) +
                 intermediateTestCases.shuffled().take(Difficulty.Intermediate.numCases) +
                 hardTestCases.shuffled().take(Difficulty.Hard.numCases)

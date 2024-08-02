@@ -1,3 +1,3 @@
 package com.csg.codeit.model
 
-data class ChallengeResponse(val result: String?)
+data class ChallengeResponse(val output: Output)

@@ -47,7 +47,7 @@ internal class EvaluationEndToEndTest {
         setMockServerResponses(
             mockTeamResponse = MockResponse()
                 .setResponseCode(200)
-                .setBody(objectMapper.writeValueAsString(ChallengeResponse("5"))),
+                .setBody(objectMapper.writeValueAsString(ChallengeResponse(Output(listOf("5"))))),
             expectedEvaluationResultRequest = expectedEvaluationResult
         )
 
@@ -61,7 +61,7 @@ internal class EvaluationEndToEndTest {
         setMockServerResponses(
             mockTeamResponse = MockResponse()
                 .setResponseCode(200)
-                .setBody(objectMapper.writeValueAsString(ChallengeResponse("5.5"))),
+                .setBody(objectMapper.writeValueAsString(ChallengeResponse(Output(listOf("5.5"))))),
             expectedEvaluationResultRequest = expectedEvaluationResult
         )
 
@@ -107,6 +107,6 @@ internal class EvaluationEndToEndTest {
 
     companion object {
         private const val RUN_ID = "runId"
-        private val TEST_CASE: TestCase<Int> = EasyTestCase(expression = Expression(value = "(add, 4, 1)"), result = 5)
+        private val TEST_CASE: TestCase = EasyTestCase(expressions = listOf("puts (add, 4, 1)"), output = Output(listOf("5")))
     }
 }
