@@ -1,0 +1,478 @@
+## Problem statement
+
+You are given multiple lines of code written in a made up lisp-like programming language.
+Your task is to write a simple interpreter given  the definition of the available functions, interpret the code we will provide and return to us everything printed to the console.
+In case a program terminates with an error, return everything printed to the console before the error and the printed error message. Error message is printed to the console automatically when error is thrown.
+
+Assumptions:
+ - The input consists only functions defined in this document.
+ - Each function invocation is wrapped in brackets (see examples below).
+ - There is a space between function name and argument(s). Function arguments are space separated.
+ - Functions never mutate original arguments but instead return a copy.
+ - Calling a function with an incorrect number of arguments will result in an error.
+ - No semicolons at the end of the line.
+ - `//` is used to 
+
+### Printing to console
+
+Can be done with method `puts` which accepts a single String argument. Providing an argument of any type other than string will result in an error.
+Returns `null`
+
+Example:
+
+Input:
+```
+(puts "hello world")
+```
+
+Output:
+```
+Hello world
+```
+
+### Constants
+
+`set` function accepts a variable name and a single argument of any type. Returns `null`.
+Only constants are supported. Once a value is assigned, it cannot be reassigned. Value assignment can be performed with `set` method.
+Constant names will be given in lowercase only. 
+
+Example:
+
+```
+(set x 5)
+```
+
+Assigning a new value to the existing constant will result in an error. Incorrect order of the arguments will result in an error.
+
+### Supported data types:
+ - String: provided in double quotes (`"`) 
+ - Boolean: `true` and `false`
+ - Number: can be integer or decimal.
+ - null
+
+### String operations
+
+#### Concatenation
+
+`concat` function accepts 2 arguments of String type. Passing argument of any other type will result in an error.
+Returns a new string created by appending second argument to the first.
+
+Example:
+
+```
+(concat "ab" "c")
+// returns: "abc"
+```
+
+#### Lower case
+
+`lowercase` function returns a copy of an input string converted to lower case. Providing an argument of any type other than String will result in an error.
+
+Example:
+```
+(lowercase "ABC")
+// returns "abc"
+
+```
+
+#### Upper case
+`uppercase` function returns a copy of an input string converted to upper case. Providing an argument of any other type than string will result in an error.
+
+
+Example:
+```
+(uppercase "abc")
+// returns "ABC"
+
+```
+
+#### Substring replacement
+
+`replace` function returns a new string obtaining by replacing each substring of target in source with replacement string. Source string remains unchanged
+
+Arguments:
+ - source: String
+ - target: String
+ - replacement: String
+
+Providing argument(s) of any type other than string will result in an error.
+
+Example:
+```
+(replace "abcdef" "abc" "123")
+// returns "123def"
+```
+
+#### Substring
+
+`substring` function returns a substring specified by given range indices with start inclusive and end index exclusive.
+
+Arguments: 
+- source: String
+- start: Non-negative number, inclusive
+- end: Non-negative number, exclusive
+
+Example:
+```
+(substring "abcdef" 0 3)
+// returns "abc"
+```
+
+Providing argument(s) of any type other than string will result in an error.
+When at least one of the indices is out of bounds an error is thrown.
+
+
+
+### Number operations
+
+#### Addition
+
+`add` function accepts at least 2 arguments of numeric type and returns a new number by adding all arguments.
+
+Example:
+```
+(add 1 2)
+// returns 3
+```
+```
+(add 1 2 3 4 5)
+// returns 15
+```
+
+Providing at least one argument of a type other than number will result in an error.
+
+#### Subtraction
+
+`subtract` function accepts at 2 arguments of numeric type and returns a new number by subtracting the second argument from the first one.
+
+Example:
+```
+(subtract 10 2)
+// returns 8
+```
+```
+(subtract 1 2)
+// returns -1
+```
+
+Providing at least one argument of a type other than number will result in an error.
+
+#### Multiplication
+
+`multiply` function accepts at least 2 arguments of numeric type and returns a new number by multiplying all arguments.
+
+Example:
+```
+(multiply 2 3)
+// returns 6
+```
+```
+(multiply 1 2 3 4 5)
+// returns 120
+```
+
+Providing at least one argument of a type other than number will result in an error.
+
+
+#### Division
+
+`divide` function accepts two arguments of numeric type: dividend and divisor. Providing at least one argument of a type other than number will result in an error.
+Division by zero will result in an error.
+
+Example:
+```
+(divide 6 2)
+// returns 3
+```
+```
+(divide 1 2)
+// returns 0.5
+```
+
+### Absolute value
+
+`abs` function accepts a single argument of numeric type. Returns an absolute value of the provided argument. Providing an argument of a type other than number will result in an error.
+
+Example:
+
+```
+(abs -1)
+// returns 1
+```
+
+```
+(abs 1)
+// returns 1 
+```
+
+
+#### Largest value among arguments
+
+`max` function accepts a variable number of arguments (at least one) of numeric type. Returns the largest number among the provided arguments. Providing an argument of a type other than number will result in an error.
+
+Example:
+
+```
+(max 1)
+// returns 1
+```
+
+```
+(max 1 2 3 4 5)
+// returns 5
+```
+
+#### Smallest value among arguments
+
+`min` function accepts a variable number of arguments (at least one) of numeric type. Returns the smallest number among the provided arguments. Providing an argument of a type other than number will result in an error.
+
+Example:
+
+```
+(min 1)
+// returns 1
+```
+
+```
+(min 5 4 3 2 1)
+// returns 1
+```
+
+#### Greater
+
+`gt` function accepts 2 numeric arguments. Returns `true` if the first argument has greater value than the second, otherwise returns `false`. Providing an argument of a type other than number will result in an error.
+
+Example:
+
+```
+(gt 1 2)
+// returns false
+```
+
+```
+(gt 2 1)
+// returns true
+```
+
+#### Smaller
+
+`lt` function accepts 2 numeric arguments. Returns `true` if the first argument has smaller value than the second, otherwise returns `false`. Providing an argument of a type other than number will result in an error.
+
+Example:
+
+```
+(lt 1 2)
+// returns true
+```
+
+```
+(lt 2 1)
+// returns false
+```
+
+### Equality check operations
+
+Can be performed on String, Number and null
+
+`equal` returns true if value and type of two arguments are equal.
+
+Arguments:
+ - first: String | Number | Boolean | null
+ - second: String | Number | Boolean | null
+
+Examples:
+
+```
+(equal 2 2.0)
+// returns true
+```
+
+```
+(equal 2 "2")
+// returns false
+```
+
+```
+(equal null null)
+// returns true
+```
+
+`not_equal` returns true if value or type of two arguments are different.
+
+Arguments:
+- first: String | Number | Boolean | null
+- second: String | Number | Boolean | null
+
+Examples:
+
+```
+(not_equal 2 2.0)
+// returns false
+```
+
+```
+(not_equal 2 "2")
+// returns true
+```
+
+```
+(not_equal null 5)
+// returns true
+```
+
+### Conversion to String
+
+`str` function accepts a single argument of String, Number, Boolean types or null and converts it to String.
+
+Examples:
+```
+(str 5)
+// returns "5"
+```
+
+```
+(str null)
+// returns "null"
+```
+
+### Error Handling
+
+All errors are unrecoverable. Once the error occurs, the error message is printed to the console immediately with the number of the line where error was raised.
+
+Example:
+
+Input:
+```
+(divide 1 0)  // line 1
+```
+
+Output:
+
+```
+ERROR at line 1
+```
+
+
+## Examples
+
+### Case 1
+
+```
+(puts "Hello World")
+(puts (str 5))
+(puts concat("ABC " str(true)))
+```
+
+Expected result:
+```
+Hello World
+5
+ABC true
+```
+
+
+
+
+### How to make things complex
+- Require recursive evaluation: puts(add(subtract(10, 5), 20))
+- Require Strong typing: methods can be invoked only with supported argument types. i.e: puts(5) -> must be puts('5') or puts(str(5))
+- For numeric operations consider integer overflow
+- Test cases must contain illegal statements: concat(puts("5"), "Hello world")
+- Division by 0 test cases
+
+### What causes errors:
+ - Illegal arithmetic operations (division by zero)
+ - use of undeclared variables
+ - illegal argument passed to function (wrong type)
+ - wrong number of argument (may consider)
+ - index out of bound
+ - reassigning variable value
+
+### Questions
+- Do we want to have custom defined functions?
+    - This will add an extra level of challenge but may confuse us as well
+- Which data types are supported:
+    - String
+    - Number
+    - Boolean 
+    - null => return type of puts
+    - ERROR => error is immediately printed to the console as `Error at line: X`
+- Which operations we want to support?
+    - add -> vararg. Number only
+    - subtract -> 2 arguments: (subtract x y) == x - y. Number only
+    - divide -> 2 arguments. Number only
+    - multiply -> vararg. Number only
+    - puts -> printing. Accept strings only. single argument. String only
+    - concat -> vararg for string. String only
+    - str -> convert number/null/boolean to a String. In case of null just print `"null"`. 1 argument. 
+    - set -> variable, value. Cannot reassign the value
+ - Additional possible operations
+   - max -> vararg. Number only
+   - min -> vararg. Number only
+   - abs -> 1 argument. Number only
+   - lowercase -> 1 arg. String only
+   - uppercase -> 1 arg. String only
+   - replace -> source, target, replacement. Replaces ALL occurrences of target in source with replacement string. String only
+   - substring -> source, start, end. End exclusive. Will throw error if index out of bound. String only
+   - equal -> 2 arguments. 2 == 2.0. ANY. Conditions for equality: SAME type and SAME value. So '2' != 2'. Comparing values of different types will return false.
+   - not_equal -> 2 arguments
+   - GREATER -> 2 arguments. true if first number is greater than the second. Numbers only
+   - SMALLER -> 2 arguments. true if first number is smaller than the second. Numbers only
+
+### Consider
+- Need to define operator precedence. alternatively, instead of `+` use something like `add` which should make it clear
+- Make brackets optional for method invocation
+- `'` or `"` for String representation
+
+### Problems:
+Participants can write JS code to implement above methods/operations according to specification, append our code and
+pass it all to `eval()` method. Need to prevent this from happening:
+
+```javascript
+let add = (a,b) => a + b
+ 
+let code = "console.log(add(5,6))"
+eval(code)
+```
+
+even if we add variable assignment like, it is still possible to transform it to valid JS code
+```javascript
+a = add(5,6)
+// a:= add(5,6)
+```
+
+Possible solution to use lisp-like syntax:
+```
+(set x 5)
+(add 5 6)
+(add x 5) 
+```
+which will require more string transformations before being passed to eval
+
+## Assumptions
+1. one line per line, no semicolons
+2. Error causes program termination. No statements after (the first) error need to be evaluated
+3. Need some standard error message: `Error at line: X`
+4. Expected return: console output. Which includes: result of puts method calls and if any `ERROR at line X` message. 
+5. each method returns new result. No inplace modification
+6. variables are immutable. Do not allow reassigning. 
+7. String is provided with double quotes `"`
+8. We cannot create an error, cannot pass it as an argument. Error can be only created by an invalid statement.
+
+```json
+{
+  "result": [
+    "5",
+    "hello world",
+    "ERROR"
+  ],
+  "result": "ERROR"
+}
+```
+
+```
+add 5 6
+set x 5
+set X add(X, 5)
+puts X
+```
