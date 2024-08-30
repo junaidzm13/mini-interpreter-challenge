@@ -2,7 +2,7 @@ package com.csg.codeit.checker
 
 // Test cases
 
-val easyTestCases = listOf(
+val easyTestCases = listOf<EasyTestCase<String>>(
 
     // subtraction
     EasyTestCase(expression = Expression(value = "(puts (subtract, 15.5, 4.0))"), result = "11.5"),
@@ -61,7 +61,7 @@ val easyTestCases = listOf(
     )
 )
 
-val intermediateTestCases = listOf(
+val intermediateTestCases = listOf<IntermediateTestCase<String>>(
     IntermediateTestCase(
         expression = Expression("(puts (str (add (subtract 10 5) 20)))"),
         result = "25"
@@ -116,7 +116,7 @@ val intermediateTestCases = listOf(
     )
 )
 
-val hardTestCases = listOf(
+val hardTestCases = listOf<HardTestCase<String>>(
     HardTestCase(
         expression = Expression("(puts \"ERROR at line 3\")\n(set a (add 10 5))\n(puts (str a))"),
         result = "ERROR at line 3\n15"

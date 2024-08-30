@@ -1,102 +1,411 @@
-# CodeIT Suisse Kotlin Template
+## Problem statement
 
-This project template provides some simple scaffolding for a level-based challenge.
+You are given multiple lines of code written in a made up lisp-like programming language.
+Your task is to write a simple interpreter given  the definition of the available functions, interpret the code we will provide and return to us everything printed to the console.
+In case a program terminates with an error, return everything printed to the console before the error and the printed error message. Error message is printed to the console automatically when error is thrown.
 
-All you need is to introduce implementations and configuration for:
+Assumptions:
+- The input consists only functions defined in this document.
+- Each function invocation is wrapped in brackets (see examples below).
+- There is a space between function name and argument(s). Function arguments are space separated.
+- Functions never mutate original arguments but instead return a copy.
+- Calling a function with an incorrect number of arguments will result in an error.
+- No semicolons at the end of the line.
+- `//` is used to
 
-* `LevelBasedChallenge`
-* `ChallengeLevel`
-* `ChallengeRequest`
-* `ChallengeResponse`
-* `Checker`
-* `Iterable<ChallengeLevel>`
+### Printing to console
 
-So that Spring can auto-wire them into `LevelEvaluatorService`.
+Can be done with method `puts` which accepts a single String argument. Providing an argument of any type other than string will result in an error.
+Returns `null`
 
-## Explainer
+Example:
 
-An evaluation request coming in from the coordinator is modelled as an `EvaluationRequest`.
+Input:
+```
+(puts "hello world")
+```
 
-This `EvaluationRequest` can in turn be expressed as an implementation of `ChallengeRun`,
-which can be `invoke()` on a `ChallengeRequest` to get a nullable `ChallengeRespose?` from the endpoint under
-evaluation.
+Output:
+```
+Hello world
+```
 
-As such, the `ChallengeRequest` implementation should be something ready for Jackson to convert,
-bearing in mind to use `@get:JsonIgnore` on any attributes you do not want to expose.
+### Constants
 
-The implementation of `LevelBasedChallenge` is responsible for creating `ChallengeRequest` for a `ChallengeLevel`. 
-Depending on where the logic for a request generation sits, this implementation can be simple, or harder.
+`set` function accepts a variable name and a single argument of any type. Returns `null`.
+Only constants are supported. Once a value is assigned, it cannot be reassigned. Value assignment can be performed with `set` method.
+Constant names will be given in lowercase only.
 
-Implementation of `ChallengeResponse` is self-explanatory, it models what your challenge is expecting in return.
+Example:
 
-Finally, the implementation of `Checker` is to score a given pair of `ChallengeRequest` and `ChallengeResponse`, 
-returning a `ChallengeResult` for it.
+```
+(set x 5)
+```
 
-## README.md
+Assigning a new value to the existing constant will result in an error. Incorrect order of the arguments will result in an error.
 
-When this project is deployed, this very file will be copied to `BOOT-INF/classes/static` so
-that [zero-md](https://zerodevx.github.io/zero-md/installation/) can render it in `index.html`.
+### Supported data types:
+- String: provided in double quotes (`"`)
+- Boolean: `true` and `false`
+- Number: can be integer or decimal.
+- null
 
-So, remember to update this README.md and the title in `index.html` (search for `<!-- RENAME BELOW -->`).
+### String operations
 
-## Local testing
+#### Concatenation
 
-For testing, write your own solver controller
-(remember to run `App` with the environment variable `ENDPOINT_SUFFIX` defined).
+`concat` function accepts 2 arguments of String type. Passing argument of any other type will result in an error.
+Returns a new string created by appending second argument to the first.
 
-Make sure your solver controller handles `POST` requests at the same path as `ENDPOINT_SUFFIX`.
+Example:
 
-Then, in your browser, go to `http://localhost:8080` (default port), open the console and run the following `fetch`
-command:
+```
+(concat "ab" "c")
+// returns: "abc"
+```
 
-````javascript
-fetch('http://localhost:8080/evaluate', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ "runId": "test", "teamUrl": "http://localhost:8080/", "callbackUrl": "http://localhost:8080/coordinator" }),
-})
-.then(response => response.text())
-.then(data => { console.log('Success!', data); })
-.catch((error) => { console.error('Error:', error); });
-````
+#### Lower case
 
-## Example controller
+`lowercase` function returns a copy of an input string converted to lower case. Providing an argument of any type other than String will result in an error.
 
-It is strongly recommended to have a controller that serves an example of the challenge request/response.
+Example:
+```
+(lowercase "ABC")
+// returns "abc"
 
-By default, the endpoint `/example` is exempted from authentication requirements in production, so feel free to use
-that.
+```
 
-The `GET` response for this can be something like:
+#### Upper case
+`uppercase` function returns a copy of an input string converted to upper case. Providing an argument of any other type than string will result in an error.
 
-````json
+
+Example:
+```
+(uppercase "abc")
+// returns "ABC"
+
+```
+
+#### Substring replacement
+
+`replace` function returns a new string obtaining by replacing each substring of target in source with replacement string. Source string remains unchanged
+
+Arguments:
+- source: String
+- target: String
+- replacement: String
+
+Providing argument(s) of any type other than string will result in an error.
+
+Example:
+```
+(replace "abcdef" "abc" "123")
+// returns "123def"
+```
+
+#### Substring
+
+`substring` function returns a substring specified by given range indices with start inclusive and end index exclusive.
+
+Arguments:
+- source: String
+- start: Non-negative number, inclusive
+- end: Non-negative number, exclusive
+
+Example:
+```
+(substring "abcdef" 0 3)
+// returns "abc"
+```
+
+Providing argument(s) of any type other than string will result in an error.
+When at least one of the indices is out of bounds an error is thrown.
+
+
+
+### Number operations
+
+#### Addition
+
+`add` function accepts at least 2 arguments of numeric type and returns a new number by adding all arguments.
+
+Example:
+```
+(add 1 2)
+// returns 3
+```
+```
+(add 1 2 3 4 5)
+// returns 15
+```
+
+Providing at least one argument of a type other than number will result in an error.
+
+#### Subtraction
+
+`subtract` function accepts at 2 arguments of numeric type and returns a new number by subtracting the second argument from the first one.
+
+Example:
+```
+(subtract 10 2)
+// returns 8
+```
+```
+(subtract 1 2)
+// returns -1
+```
+
+Providing at least one argument of a type other than number will result in an error.
+
+#### Multiplication
+
+`multiply` function accepts at least 2 arguments of numeric type and returns a new number by multiplying all arguments.
+
+Example:
+```
+(multiply 2 3)
+// returns 6
+```
+```
+(multiply 1 2 3 4 5)
+// returns 120
+```
+
+Providing at least one argument of a type other than number will result in an error.
+
+
+#### Division
+
+`divide` function accepts two arguments of numeric type: dividend and divisor. Providing at least one argument of a type other than number will result in an error.
+Division by zero will result in an error.
+
+Example:
+```
+(divide 6 2)
+// returns 3
+```
+```
+(divide 1 2)
+// returns 0.5
+```
+
+### Absolute value
+
+`abs` function accepts a single argument of numeric type. Returns an absolute value of the provided argument. Providing an argument of a type other than number will result in an error.
+
+Example:
+
+```
+(abs -1)
+// returns 1
+```
+
+```
+(abs 1)
+// returns 1 
+```
+
+
+#### Largest value among arguments
+
+`max` function accepts a variable number of arguments (at least one) of numeric type. Returns the largest number among the provided arguments. Providing an argument of a type other than number will result in an error.
+
+Example:
+
+```
+(max 1)
+// returns 1
+```
+
+```
+(max 1 2 3 4 5)
+// returns 5
+```
+
+#### Smallest value among arguments
+
+`min` function accepts a variable number of arguments (at least one) of numeric type. Returns the smallest number among the provided arguments. Providing an argument of a type other than number will result in an error.
+
+Example:
+
+```
+(min 1)
+// returns 1
+```
+
+```
+(min 5 4 3 2 1)
+// returns 1
+```
+
+#### Greater
+
+`gt` function accepts 2 numeric arguments. Returns `true` if the first argument has greater value than the second, otherwise returns `false`. Providing an argument of a type other than number will result in an error.
+
+Example:
+
+```
+(gt 1 2)
+// returns false
+```
+
+```
+(gt 2 1)
+// returns true
+```
+
+#### Smaller
+
+`lt` function accepts 2 numeric arguments. Returns `true` if the first argument has smaller value than the second, otherwise returns `false`. Providing an argument of a type other than number will result in an error.
+
+Example:
+
+```
+(lt 1 2)
+// returns true
+```
+
+```
+(lt 2 1)
+// returns false
+```
+
+### Equality check operations
+
+Can be performed on String, Number and null
+
+`equal` returns true if value and type of two arguments are equal.
+
+Arguments:
+- first: String | Number | Boolean | null
+- second: String | Number | Boolean | null
+
+Examples:
+
+```
+(equal 2 2.0)
+// returns true
+```
+
+```
+(equal 2 "2")
+// returns false
+```
+
+```
+(equal null null)
+// returns true
+```
+
+`not_equal` returns true if value or type of two arguments are different.
+
+Arguments:
+- first: String | Number | Boolean | null
+- second: String | Number | Boolean | null
+
+Examples:
+
+```
+(not_equal 2 2.0)
+// returns false
+```
+
+```
+(not_equal 2 "2")
+// returns true
+```
+
+```
+(not_equal null 5)
+// returns true
+```
+
+### Conversion to String
+
+`str` function accepts a single argument of String, Number, Boolean types or null and converts it to String.
+
+Examples:
+```
+(str 5)
+// returns "5"
+```
+
+```
+(str null)
+// returns "null"
+```
+
+### Error Handling
+
+All errors are unrecoverable. Once the error occurs, the error message is printed to the console immediately with the number of the line where error was raised.
+
+Example:
+
+Input:
+```
+(divide 1 0)  // line 1
+```
+
+Output:
+
+```
+ERROR at line 1
+```
+
+
+## Examples
+
+### Case 1
+
+```
+(puts "Hello World")
+(puts (str 5))
+(puts concat("ABC " str(true)))
+```
+
+Expected result:
+```
+Hello World
+5
+ABC true
+```
+
+## Input format
+
+Your application must be able to handle HTTP POST request with the following `application/json` content type body format:
+
+```json
 {
-  "request": {
-    "challenge": "request"
-  },
-  "response": {
-    "challenge": [
-      "response",
-      "as",
-      "desired"
-    ]
+  "expression": {
+    "value": String
   }
 }
-````
+```
 
-## Gitlab CI/Heroku
+As shown in the above examples in problem definition, the code is a multiline string. You can expect multiline input to be represented as a single line separated by `\n` character, as in this example:
 
-This template has Gitlab CI set up for easy deployments to Heroku via [`dpl`](https://github.com/travis-ci/dpl). By
-default, only `master` branch will be deployed.
+```json
+{
+  "expression": {
+    "value": "(puts \"Hello\")\n(puts \"World!\")"
+  }
+}
+```
 
-You will need to add the following CI/CD variables under Settings:
+## Output format
 
-- `HEROKU_APP_NAME`
-- `HEROKU_API_KEY` (Remember to set this variable as masked so that it will not be printed in build logs)
+Your application must be able to return `application/json` content type body with the following format:
 
-To perform deployments for branches, do not set the variables as protected so that the pipeline is able to access the
-variables.
+```json
+{
+  "result": String
+}
+```
 
-If you wish to have multiple environments, you can add in CI/CD variables with environment scope, and add a new job
-in `.gitlab-ci.yml` extending `.deploy_template` for the new environment(s). A sample set-up can be found in
-branch `gitlab-ci-demo`.
+As shown in the above examples in problem definition, the result printed to console is a multiline string. You must provide multiline output as a single line string separated by `\n` character, as in this example:
+
+```json
+{
+  "result": "Hello\nWorld!"
+}
+```
