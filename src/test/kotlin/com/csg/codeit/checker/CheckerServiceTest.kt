@@ -14,7 +14,7 @@ class CheckerServiceTest {
     private val testCaseContainer: TestCaseContainer = mockk()
     private val checkerService: Checker = CheckerService(testCaseContainer)
 
-    @MethodSource("testCases")
+    @MethodSource("valuesMatchTestCases")
     @ParameterizedTest(name = "{0} where actual = `{1}` and expected = `{2}`")
     fun `test 'check' method`(name: String, actual: List<String>, expected: List<String>, isEqual: Boolean) {
         every { testCaseContainer.getTestCases() } returns listOf(mockTestCase(expected))
@@ -33,7 +33,7 @@ class CheckerServiceTest {
 
     companion object {
         @JvmStatic
-        private fun testCases() = Stream.of(
+        private fun valuesMatchTestCases() = Stream.of(
             // test case name | actual response | expected response | true if equal else false
             Arguments.of("length of actual is greater than expected", listOf("10"), listOf("10", "0.5"), false),
             Arguments.of("length of expected is greater than actual", listOf("10", "0.5"), listOf("10"), false),
