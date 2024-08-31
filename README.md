@@ -2,7 +2,8 @@
 
 You are given multiple lines of code written in a made up lisp-like programming language.
 Your task is to write a simple interpreter given  the definition of the available functions, interpret the code we will provide and return to us everything printed to the console.
-In case a program terminates with an error, return everything printed to the console before the error and the printed error message. Error message is printed to the console automatically when error is thrown.
+In case a program terminates with an error, return everything printed to the console before the error and the printed error message. 
+Error message is printed to the console automatically when error is thrown.
 
 Assumptions:
 - The input consists only functions defined in this document.
@@ -10,13 +11,14 @@ Assumptions:
 - There is a space between function name and argument(s). Function arguments are space separated.
 - Functions never mutate original arguments but instead return a copy.
 - Calling a function with an incorrect number of arguments will result in an error.
+- If a single expression raises multiple errors, you can treat it as a single error.
 - No semicolons at the end of the line.
-- `//` is used to
+- `//` in the examples is used to denote a comment. It will not appear in the actual code.
 
 ### Printing to console
 
-Can be done with method `puts` which accepts a single String argument. Providing an argument of any type other than string will result in an error.
-Returns `null`
+Can be done with method `puts` which accepts a single String argument. Providing an argument of any type other than String will result in an error.
+This function returns `null`
 
 Example:
 
@@ -33,8 +35,8 @@ Hello world
 ### Constants
 
 `set` function accepts a variable name and a single argument of any type. Returns `null`.
-Only constants are supported. Once a value is assigned, it cannot be reassigned. Value assignment can be performed with `set` method.
-Constant names will be given in lowercase only.
+Only constants are supported. Value assignment can be performed with `set` method.
+Constant names will be given in lowercase only. 
 
 Example:
 
@@ -42,7 +44,7 @@ Example:
 (set x 5)
 ```
 
-Assigning a new value to the existing constant will result in an error. Incorrect order of the arguments will result in an error.
+Assigning a new value to an existing constant will result in an error. Incorrect order of the arguments will result in an error.
 
 ### Supported data types:
 - String: provided in double quotes (`"`)
@@ -55,7 +57,7 @@ Assigning a new value to the existing constant will result in an error. Incorrec
 #### Concatenation
 
 `concat` function accepts 2 arguments of String type. Passing argument of any other type will result in an error.
-Returns a new string created by appending second argument to the first.
+Returns a new String created by appending second argument to the first.
 
 Example:
 
@@ -66,7 +68,7 @@ Example:
 
 #### Lower case
 
-`lowercase` function returns a copy of an input string converted to lower case. Providing an argument of any type other than String will result in an error.
+`lowercase` function returns a copy of an input String converted to lower case. Providing an argument of any type other than String will result in an error.
 
 Example:
 ```
@@ -76,7 +78,7 @@ Example:
 ```
 
 #### Upper case
-`uppercase` function returns a copy of an input string converted to upper case. Providing an argument of any other type than string will result in an error.
+`uppercase` function returns a copy of an input String converted to upper case. Providing an argument of any other type than string will result in an error.
 
 
 Example:
@@ -88,14 +90,14 @@ Example:
 
 #### Substring replacement
 
-`replace` function returns a new string obtaining by replacing each substring of target in source with replacement string. Source string remains unchanged
+`replace` function returns a new String obtaining by replacing each substring of target in source with replacement String. Source String remains unchanged
 
 Arguments:
 - source: String
 - target: String
 - replacement: String
 
-Providing argument(s) of any type other than string will result in an error.
+Providing argument(s) of any type other than String will result in an error.
 
 Example:
 ```
@@ -118,7 +120,7 @@ Example:
 // returns "abc"
 ```
 
-Providing argument(s) of any type other than string will result in an error.
+Providing argument(s) of incorrect type will result in an error.
 When at least one of the indices is out of bounds an error is thrown.
 
 
@@ -208,7 +210,11 @@ Example:
 
 #### Largest value among arguments
 
-`max` function accepts a variable number of arguments (at least one) of numeric type. Returns the largest number among the provided arguments. Providing an argument of a type other than number will result in an error.
+`max` function accepts a variable number of arguments (at least one) of numeric type. Returns the largest number among the provided arguments. 
+
+Providing no arguments will result in an error.
+
+Providing an argument of a type other than number will result in an error.
 
 Example:
 
@@ -224,7 +230,11 @@ Example:
 
 #### Smallest value among arguments
 
-`min` function accepts a variable number of arguments (at least one) of numeric type. Returns the smallest number among the provided arguments. Providing an argument of a type other than number will result in an error.
+`min` function accepts a variable number of arguments (at least one) of numeric type. Returns the smallest number among the provided arguments. 
+
+Providing no arguments will result in an error.
+
+Providing an argument of a type other than number will result in an error.
 
 Example:
 
@@ -240,7 +250,11 @@ Example:
 
 #### Greater
 
-`gt` function accepts 2 numeric arguments. Returns `true` if the first argument has greater value than the second, otherwise returns `false`. Providing an argument of a type other than number will result in an error.
+`gt` function accepts 2 numeric arguments. Returns `true` if the first argument has greater value than the second, otherwise returns `false`.
+
+Providing no arguments will result in an error.
+
+Providing an argument of a type other than number will result in an error.
 
 Example:
 
@@ -256,7 +270,13 @@ Example:
 
 #### Smaller
 
-`lt` function accepts 2 numeric arguments. Returns `true` if the first argument has smaller value than the second, otherwise returns `false`. Providing an argument of a type other than number will result in an error.
+`lt` function accepts 2 numeric arguments. Returns `true` if the first argument has smaller value than the second, otherwise returns `false`. 
+
+Providing an argument of a type other than number will result in an error.
+
+Providing no arguments will result in an error.
+
+Providing an argument of a type other than number will result in an error.
 
 Example:
 
@@ -337,7 +357,8 @@ Examples:
 
 ### Error Handling
 
-All errors are unrecoverable. Once the error occurs, the error message is printed to the console immediately with the number of the line where error was raised.
+All errors are unrecoverable. Once the error occurs, the error message is printed to the console immediately.
+The error message contains a String `ERROR at line ` and line number where error was raised.
 
 Example:
 
@@ -360,7 +381,7 @@ ERROR at line 1
 ```
 (puts "Hello World")
 (puts (str 5))
-(puts concat("ABC " str(true)))
+(puts (concat "ABC " (str true)))
 ```
 
 Expected result:
@@ -372,40 +393,44 @@ ABC true
 
 ## Input format
 
-Your application must be able to handle HTTP POST request with the following `application/json` content type body format:
+Your application must be able to accept HTTP POST request with body containing JSON payload in the following format:
 
 ```json
 {
-  "expression": {
-    "value": String
-  }
+  "expressions": ["String array"]
 }
 ```
 
-As shown in the above examples in problem definition, the code is a multiline string. You can expect multiline input to be represented as a single line separated by `\n` character, as in this example:
+As shown in the problem definition, the input code can span multiple lines. You will receive input as a JSON key/value pair,
+where value is a String array, as in this example. Keep in mind that quotes(`"`) will be escaped in the input your application will receive:
 
 ```json
 {
-  "expression": {
-    "value": "(puts \"Hello\")\n(puts \"World!\")"
-  }
+  "expressions": [
+    "(puts \"Hello\")",
+    "(puts \"World!\")"
+  ]
 }
 ```
 
 ## Output format
 
-Your application must be able to return `application/json` content type body with the following format:
+Your application HTTP response body must contain JSON in the following format:
 
 ```json
 {
-  "result": String
+  "output": ["String array"]
 }
 ```
 
-As shown in the above examples in problem definition, the result printed to console is a multiline string. You must provide multiline output as a single line string separated by `\n` character, as in this example:
+As shown in the problem definition, console output may contain multiple lines. You must provide output as a JSON key/value pair,
+where value is a String array as in this example:
 
 ```json
 {
-  "result": "Hello\nWorld!"
+  "output": [
+    "Hello",
+    "World!"
+  ]
 }
 ```
