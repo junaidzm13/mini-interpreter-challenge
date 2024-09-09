@@ -102,15 +102,6 @@ val intermediateTestCases: List<IntermediateTestCase> = listOf(
         Output(results = listOf("true", "true", "false"))
     ),
     IntermediateTestCase(
-        expressions = listOf(
-            "(set x 10)",
-            "(puts (str (add x 5)))",
-            "(puts (str (divide x 0)))",
-            "(puts \"This line should not be printed\"))"
-        ),
-        Output(results = listOf("15", "ERROR at line 3"))
-    ),
-    IntermediateTestCase(
         expressions = listOf("(puts (uppercase (concat \"hello\" (lowercase \"WORLD\")))))"),
         Output(results = listOf("HELLOworld"))
     ),
@@ -125,18 +116,43 @@ val intermediateTestCases: List<IntermediateTestCase> = listOf(
             "(puts (str (not_equal null 0)))"
         ),
         Output(results = listOf("true", "true", "true"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf("(puts (replace (concat (uppercase \"hello\")) (lowercase \"WORLD\"))) \"LO\" \"XY\")))"),
+        Output(results = listOf("HEXYLOWORLD"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf("(puts (str (equal (add 5 5) 10)))", "(puts (str (gt (add 5 \"5\")) 10)))"),
+        Output(results = listOf("true", "ERROR at line 2"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf("(puts \"ERROR at line 3\"))", "(set a (add 10 5))", "(puts (str a))"),
+        Output(results = listOf("ERROR at line 3", "15"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf("(puts (concat (str (add (subtract 20 10) (multiply 2 3)))) \" is the result\"))"),
+        Output(results = listOf("16 is the result"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf("(puts (substring \"abcdef\" 0 6))", "(puts (substring \"abcdef\" 2 10))"),
+        Output(results = listOf("abcdef", "ERROR at line 2"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf("(puts (str (add (subtract (multiply (divide 100 2) (add 10 5)) 25) 10)))"),
+        Output(results = listOf("735"))
     )
 
 )
 
 val hardTestCases: List<HardTestCase> = listOf(
     HardTestCase(
-        expressions = listOf("(puts \"ERROR at line 3\"))", "(set a (add 10 5))", "(puts (str a))"),
-        Output(results = listOf("ERROR at line 3", "15"))
-    ),
-    HardTestCase(
-        expressions = listOf("(puts (concat (str (add (subtract 20 10) (multiply 2 3)))) \" is the result\"))"),
-        Output(results = listOf("16 is the result"))
+        expressions = listOf(
+            "(set x 10)",
+            "(puts (str (add x 5)))",
+            "(puts (str (divide x 0)))",
+            "(puts \"This line should not be printed\"))"
+        ),
+        Output(results = listOf("15", "ERROR at line 3"))
     ),
     HardTestCase(
         expressions = listOf(
@@ -148,14 +164,6 @@ val hardTestCases: List<HardTestCase> = listOf(
         Output(results = listOf("5", "ERROR at line 2"))
     ),
     HardTestCase(
-        expressions = listOf("(puts (substring \"abcdef\" 0 6))", "(puts (substring \"abcdef\" 2 10))"),
-        Output(results = listOf("abcdef", "ERROR at line 2"))
-    ),
-    HardTestCase(
-        expressions = listOf("(puts (str (add (subtract (multiply (divide 100 2) (add 10 5)) 25) 10)))"),
-        Output(results = listOf("735"))
-    ),
-    HardTestCase(
         expressions = listOf(
             "(set x 50)",
             "(puts (str (add x 10)))",
@@ -163,14 +171,6 @@ val hardTestCases: List<HardTestCase> = listOf(
             "(set x 100)"
         ),
         Output(results = listOf("60", "el", "ERROR at line 4"))
-    ),
-    HardTestCase(
-        expressions = listOf("(puts (replace (concat (uppercase \"hello\")) (lowercase \"WORLD\"))) \"LO\" \"XY\")))"),
-        Output(results = listOf("HEXYLOWORLD"))
-    ),
-    HardTestCase(
-        expressions = listOf("(puts (str (equal (add 5 5) 10)))", "(puts (str (gt (add 5 \"5\")) 10)))"),
-        Output(results = listOf("true", "ERROR at line 2"))
     ),
     HardTestCase(
         expressions = listOf(
@@ -260,5 +260,33 @@ val hardTestCases: List<HardTestCase> = listOf(
             "(puts (str g))"
         ),
         Output(results = listOf("ERROR at line 4"))
-    )
+    ),
+    HardTestCase(
+        expressions = listOf(
+            "(set a (add 100 (subtract 200 (divide 300 10))))", // 270
+            "(set b (concat (uppercase (str a)) \" Complex\")))", // 270 Complex
+            "(set c (replace b \"300\" (str (divide (add (multiply 2 5) (subtract 500 100)) 5))))", // 270 Complex
+            "(set d (multiply (subtract (max 100 200) (min 10 20)) (abs (subtract 500 (divide 100 10)))))", // 190 * 490 = 93_100
+            "(puts (str (equal (subtract d (multiply a 2)) 1000)))", // 92560 == 1000 => false
+            "(set e (concat (lowercase (str d)) \" Nightmare\")))", // e := "93100 Nightmare"
+            "(puts e)",
+            "(set f (add (str d) (uppercase e)))",
+            "(puts (str f))",
+            "(set g (divide (subtract f a) (add (multiply (subtract 100 50) (divide 200 0)) 10)))",
+            "(puts (str g))"
+        ),
+        Output(results = listOf("false", "93100 Nightmare", "ERROR at line 8"))
+    ),
+    HardTestCase(
+        expressions = listOf(
+            "(set x (add 10 20))",
+            "(set y (multiply x 2))",
+            "(set z (subtract y (divide 100 10)))",
+            "(set result (concat \"Result is: \" (str z)))",
+            "(puts (str (lowercase (str result))))",
+            "(set output (replace (concat (uppercase (lowercase result)) \".75\") (str 0) (str 5)))", // output := "RESULT IS: 55.75"
+            "(puts (str (uppercase (uppercase (uppercase output)))))"
+        ),
+        Output(results = listOf("result is: 50", "RESULT IS: 55.75"))
+    ),
 )
