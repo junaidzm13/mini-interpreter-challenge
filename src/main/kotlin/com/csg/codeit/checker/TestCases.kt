@@ -15,6 +15,8 @@ val easyTestCases: List<EasyTestCase> = listOf(
     // division
     EasyTestCase(expressions = listOf("(puts (divide 25.5 -5.1))"), Output(results = listOf("-5.0"))),
     EasyTestCase(expressions = listOf("(puts (divide 650.25 5.0))"), Output(results = listOf("130.05"))),
+    EasyTestCase(expressions = listOf("(puts (divide 10 4))"), Output(results = listOf("2"))),
+    EasyTestCase(expressions = listOf("(puts (divide 1 2))"), Output(results = listOf("0"))),
 
     // concatenation
     EasyTestCase(
@@ -106,8 +108,8 @@ val intermediateTestCases: List<IntermediateTestCase> = listOf(
         Output(results = listOf("10"))
     ),
     IntermediateTestCase(
-        expressions = listOf("(puts (concat \"The result is: \" (str (add 5 5))))"),
-        Output(results = listOf("The result is: 10"))
+        expressions = listOf("(puts (concat \"The result is: \" (str (add 5.0 5))))"),
+        Output(results = listOf("The result is: 10.0"))
     ),
     IntermediateTestCase(
         expressions = listOf("(puts (substring \"abcdef\" 2 5))"),

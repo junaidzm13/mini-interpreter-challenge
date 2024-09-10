@@ -178,6 +178,14 @@ Example:
 // returns 6
 ```
 ```
+(multiply 2.0 3)
+// returns 6.0
+```
+```
+(multiply 2 2.5)
+// returns 5.0
+```
+```
 (multiply 1 2 3 4 5)
 // returns 120
 ```
@@ -187,8 +195,7 @@ Providing at least one argument of a type other than number will result in an er
 
 #### Division
 
-`divide` function accepts two arguments of numeric type: dividend and divisor. Providing at least one argument of a type other than number will result in an error.
-Division by zero will result in an error.
+`divide` function accepts two arguments of numeric type: dividend and divisor. Providing at least one argument of a type other than number will result in an error. If both operands are integer then it should perform integer division. Division by zero will result in an error.
 
 Example:
 ```
@@ -197,6 +204,10 @@ Example:
 ```
 ```
 (divide 1 2)
+// returns 0
+```
+```
+(divide 1.0 2)
 // returns 0.5
 ```
 
@@ -298,6 +309,15 @@ Example:
 (lt 2 1)
 // returns false
 ```
+
+*For Number operations involving decimals please keep your console outputs to minimum required decimal points (no trailing 0s except for the first) with a max of 4.*
+*For example:*
+
+```(add 10.0 10) should return 20.0 (not 20)```
+
+```(divide 10 3.0) should return 3.3333```
+
+```(divide 10 4.0) should return 2.5```
 
 ### Equality check operations
 
