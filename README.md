@@ -97,12 +97,19 @@ Arguments:
 - target: String
 - replacement: String
 
+If target String is not present in the source, returns source String
+
 Providing argument(s) of any type other than String will result in an error.
 
 Example:
 ```
 (replace "abcdef" "abc" "123")
 // returns "123def"
+```
+
+```
+(replace "abc" "xyz" "123")
+// returns "abc"
 ```
 
 #### Substring
@@ -113,6 +120,8 @@ Arguments:
 - source: String
 - start: Non-negative number, inclusive
 - end: Non-negative number, exclusive
+
+First character of String is at index 0.
 
 Example:
 ```
