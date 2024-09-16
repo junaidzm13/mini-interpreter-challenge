@@ -230,7 +230,7 @@ Example:
 
 #### Largest value among arguments
 
-`max` function accepts a variable number of arguments (at least one) of numeric type. Returns the largest number among the provided arguments. 
+`max` function accepts a variable number of arguments (at least 2) of numeric type. Returns the largest number among the provided arguments. 
 
 Providing no arguments will result in an error.
 
@@ -250,7 +250,7 @@ Example:
 
 #### Smallest value among arguments
 
-`min` function accepts a variable number of arguments (at least one) of numeric type. Returns the smallest number among the provided arguments. 
+`min` function accepts a variable number of arguments (at least 2) of numeric type. Returns the smallest number among the provided arguments. 
 
 Providing no arguments will result in an error.
 

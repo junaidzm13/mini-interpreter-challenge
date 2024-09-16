@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    scala
     kotlin("jvm") version "1.6.20"
     id("org.springframework.boot") version "2.6.6"
     id("org.jetbrains.kotlin.plugin.spring") version "1.6.20"
@@ -15,6 +16,7 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":ex-gen"))
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
@@ -48,6 +50,7 @@ tasks.getByName<Jar>("bootJar") {
         into("BOOT-INF/classes/static")
     }
 }
+
 tasks.getByName<Jar>("jar") {
     enabled = false
 }

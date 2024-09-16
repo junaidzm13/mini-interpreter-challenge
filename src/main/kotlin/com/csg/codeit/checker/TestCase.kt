@@ -37,5 +37,3 @@ enum class Difficulty(val score: Int, val numCases: Int) {
     Intermediate(score = 3, numCases = 10), // 10 * 3 = 30
     Hard(score = 5, numCases = 12); // 12 * 5 = 60
 }
-
-data class Expression(val value: String)

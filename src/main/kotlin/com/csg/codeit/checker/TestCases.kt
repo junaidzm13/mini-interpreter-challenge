@@ -1,8 +1,10 @@
 package com.csg.codeit.checker
 
+import com.csg.codeit.*
+import com.csg.codeit.expression.toTestCase
 import com.csg.codeit.model.Output
 
-val easyTestCases: List<EasyTestCase> = listOf(
+fun easyTestCases(): List<EasyTestCase> = listOf(
 
     // subtraction
     EasyTestCase(expressions = listOf("(puts (subtract 15.5 4.0))"), Output(results = listOf("11.5"))),
@@ -102,7 +104,7 @@ val easyTestCases: List<EasyTestCase> = listOf(
     )
 )
 
-val intermediateTestCases: List<IntermediateTestCase> = listOf(
+fun intermediateTestCases(): List<IntermediateTestCase> = listOf(
     IntermediateTestCase(
         expressions = listOf("(puts (str (add (subtract 10 5) 20)))"),
         Output(results = listOf("25"))
@@ -246,9 +248,17 @@ val intermediateTestCases: List<IntermediateTestCase> = listOf(
         Output(results = listOf("false"))
     ),
 
-)
+) + listOf<List<Expression>>(
+    // Different cases for division
+    listOf(
+        PutsExpression(StrExpression(DivideExpression(IntExpression(10), IntExpression(2)))),
+        PutsExpression(StrExpression(DivideExpression(IntExpression(10), DoubleExpression(2.0)))),
+        PutsExpression(StrExpression(DivideExpression(DoubleExpression(5.5), DoubleExpression(2.0)))),
+        PutsExpression(StrExpression(DivideExpression(IntExpression(5), IntExpression(0)))),
+    ).shuffled()
+).map { it.toTestCase(IntermediateTestCase::class) }
 
-val hardTestCases: List<HardTestCase> = listOf(
+fun hardTestCases(): List<HardTestCase> = listOf(
     HardTestCase(
         expressions = listOf(
             "(set x 10)",
