@@ -33,7 +33,7 @@ data class HardTestCase(
 }
 
 enum class Difficulty(val score: Int, val numCases: Int) {
-    Easy(score = 1, numCases = 10), // 10 * 1 = 10
-    Intermediate(score = 3, numCases = 10), // 10 * 3 = 30
-    Hard(score = 5, numCases = 12); // 12 * 5 = 60
+    Easy(score = 1, numCases = 10), // 1 * 10 = 10
+    Intermediate(score = 2, numCases = 15), // 2 * 15 = 30
+    Hard(score = 3, numCases = 20); // 3 * 20 = 60
 }

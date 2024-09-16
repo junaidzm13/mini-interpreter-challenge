@@ -14,8 +14,8 @@ object ExpressionGeneratorUtils {
     }
 
     object ScalaUtils {
-        fun <T> toScalaSeq(l: Iterable<T>): scala.collection.immutable.Seq<T> {
-            return CollectionConverters.asScala(l).toSeq()
+        fun <T> toScalaSeq(vararg ts: T): scala.collection.immutable.Seq<T> {
+            return CollectionConverters.asScala(ts.toList()).toSeq()
         }
 
         fun <T> toScala(l: List<T>): scala.collection.immutable.List<T> {

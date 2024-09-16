@@ -9,6 +9,7 @@ import com.csg.codeit.AddExpression
 import com.csg.codeit.ConcatExpression
 import com.csg.codeit.DivideExpression
 import com.csg.codeit.DoubleExpression
+import com.csg.codeit.Expression
 import com.csg.codeit.IntExpression
 import com.csg.codeit.LowercaseExpression
 import com.csg.codeit.MultiplyExpression
@@ -32,10 +33,8 @@ class ExpressionTest {
             Output(results = listOf("3"))
         )
 
-        val l = listOf(IntExpression(1), IntExpression(2))
-        val exp = listOf(
-            PutsExpression(StrExpression(AddExpression(toScalaSeq(l))))
-        )
+        val l = toScalaSeq<Expression>(IntExpression(1), IntExpression(2))
+        val exp = listOf(PutsExpression(StrExpression(AddExpression(l))))
 
         assertThat(testCase).isEqualTo(exp.toTestCase(EasyTestCase::class))
     }
@@ -51,10 +50,10 @@ class ExpressionTest {
         val exp = listOf(
             PutsExpression(
                 StrExpression(
-                    AddExpression(toScalaSeq(listOf(
+                    AddExpression(toScalaSeq(
                         SubtractExpression(IntExpression(10), IntExpression(5)),
                         IntExpression(20)
-                    )))
+                    ))
                 )
             )
         )
@@ -105,8 +104,8 @@ class ExpressionTest {
         )
 
         val exp = listOf(
-            SetExpression("x", AddExpression(toScalaSeq(listOf(IntExpression(10), IntExpression(20))))),
-            SetExpression("y", MultiplyExpression(toScalaSeq(listOf(VarExpression("x"), IntExpression(2))))),
+            SetExpression("x", AddExpression(toScalaSeq(IntExpression(10), IntExpression(20)))),
+            SetExpression("y", MultiplyExpression(toScalaSeq(VarExpression("x"), IntExpression(2)))),
             SetExpression("z", SubtractExpression(VarExpression("y"), DivideExpression(IntExpression(100), IntExpression(10)))),
             SetExpression("result", ConcatExpression(StringExpression("Result is: "), StrExpression(VarExpression("z")))),
             PutsExpression(StrExpression(LowercaseExpression(StrExpression(VarExpression("result"))))),

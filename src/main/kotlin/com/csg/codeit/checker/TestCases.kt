@@ -1,25 +1,11 @@
 package com.csg.codeit.checker
 
 import com.csg.codeit.*
+import com.csg.codeit.expression.ExpressionGeneratorUtils.ScalaUtils.toScalaSeq
 import com.csg.codeit.expression.toTestCase
 import com.csg.codeit.model.Output
 
 fun easyTestCases(): List<EasyTestCase> = listOf(
-
-    // subtraction
-    EasyTestCase(expressions = listOf("(puts (subtract 15.5 4.0))"), Output(results = listOf("11.5"))),
-    EasyTestCase(expressions = listOf("(puts (subtract 1 2))"), Output(results = listOf("-1"))),
-
-    // multiplication
-    EasyTestCase(expressions = listOf("(puts (multiply 10.6 2.0 10.0))"), Output(results = listOf("212.0"))),
-    EasyTestCase(expressions = listOf("(puts (multiply 3.0 -2.5))"), Output(results = listOf("-7.5"))),
-
-    // division
-    EasyTestCase(expressions = listOf("(puts (divide 25.5 -5.1))"), Output(results = listOf("-5.0"))),
-    EasyTestCase(expressions = listOf("(puts (divide 650.25 5.0))"), Output(results = listOf("130.05"))),
-    EasyTestCase(expressions = listOf("(puts (divide 10 4))"), Output(results = listOf("2"))),
-    EasyTestCase(expressions = listOf("(puts (divide 1 2))"), Output(results = listOf("0"))),
-
     // concatenation
     EasyTestCase(
         expressions = listOf("(puts (concat \"MyParser\" \"IsBest\")))"),
@@ -102,7 +88,21 @@ fun easyTestCases(): List<EasyTestCase> = listOf(
         expressions = listOf("(puts (replace \"hello world\" \"planet\" \"earth\"))"),
         Output(results = listOf("hello world"))
     )
-)
+) + listOf<List<Expression>>(
+    // subtraction
+    listOf(PutsExpression(StrExpression(SubtractExpression(DoubleExpression(15.5), DoubleExpression(4.0))))),
+    listOf(PutsExpression(StrExpression(SubtractExpression(IntExpression(1), IntExpression(2))))),
+
+    // multiplication
+    listOf(PutsExpression(StrExpression(MultiplyExpression(toScalaSeq(DoubleExpression(10.6), DoubleExpression(2.0), DoubleExpression(10.0)))))),
+    listOf(PutsExpression(StrExpression(MultiplyExpression(toScalaSeq(IntExpression(3), DoubleExpression(-2.5)))))),
+
+    // division
+    listOf(PutsExpression(StrExpression(DivideExpression(DoubleExpression(25.5), DoubleExpression(-5.1))))),
+    listOf(PutsExpression(StrExpression(DivideExpression(DoubleExpression(650.25), DoubleExpression(5.0))))),
+    listOf(PutsExpression(StrExpression(DivideExpression(IntExpression(10), IntExpression(4))))),
+    listOf(PutsExpression(StrExpression(DivideExpression(IntExpression(1), IntExpression(2))))),
+).map { it.toTestCase(EasyTestCase::class) }
 
 fun intermediateTestCases(): List<IntermediateTestCase> = listOf(
     IntermediateTestCase(
