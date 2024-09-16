@@ -496,4 +496,49 @@ val hardTestCases: List<HardTestCase> = listOf(
         ),
         Output(results = listOf("Result: 16", "NestedWorks1"))
     ),
+
+    HardTestCase(
+        expressions = listOf(
+            "(set x (str (multiply (add 10 (subtract 20 5)) (divide 100 10))))", // x = 250
+            "(puts (replace x (str (divide 250 10)) (str (multiply 2 3))))", // replace "25" with "6"
+            "(puts (concat (uppercase x) \" TEST\"))" // "250 TEST"
+        ),
+        Output(results = listOf("60", "150 TEST"))
+    ),
+    HardTestCase(
+        expressions = listOf(
+            "(set a (concat (str (add 10 20)) (uppercase (replace \"test\" \"t\" \"b\"))))", // a = "30BESB"
+            "(puts (substring a (subtract (multiply 2 3) 4) (add 3 3)))", // substring of last 4 characters
+            "(puts (str (not_equal a 30)))" // true
+        ),
+        Output(results = listOf("BESB", "true"))
+    ),
+    HardTestCase(
+        expressions = listOf(
+            "(set x (divide (add 100 (subtract (multiply 2 5) 10)) (multiply 2 5)))", // x = 10
+            "(puts (concat (str (equal x 10)) \" isEqual\"))", // "true isEqual"
+            "(puts (str (add x (replace (str 10) \"10\" \"5\"))))" // should raise error
+        ),
+        Output(results = listOf("true isEqual", "ERROR at line 3"))
+    ),
+
+    HardTestCase(
+        expressions = listOf(
+            "(set x (add 10 (multiply 2 5)))", // x = 20
+            "(set y (subtract x (divide (multiply 2 10) (add 5 5))))", // y = 18
+            "(puts (str (add (multiply x y) (divide 100 5))))", // 20 * 18 + 20 = 380
+            "(puts (concat (uppercase (str y)) \" FINAL\"))" // 18 FINAL
+        ),
+        Output(results = listOf("380", "18 FINAL"))
+    ),
+    HardTestCase(
+        expressions = listOf(
+            "(set a (add 10 (multiply (subtract 20 (divide 30 3)) (add 5 (max 1 2)))))", // a = 80
+            "(set b (concat (lowercase (str a)) \" Test\"))", // "80 test"
+            "(puts (replace b \"80\" (str (add 10 (subtract 20 5)))))", // replace "80" with "25"
+            "(puts (str (equal a 80)))", // true
+            "(puts (concat b \" Complete\"))" // "80 test Complete"
+        ),
+        Output(results = listOf("25 test", "true", "80 test Complete"))
+    )
 )
