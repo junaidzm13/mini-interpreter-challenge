@@ -71,6 +71,12 @@ val easyTestCases: List<EasyTestCase> = listOf(
             "false"
         ))
     ),
+    // Basic string comparison
+    EasyTestCase(
+        expressions = listOf("(puts (str (equal \"10.0\" \"10\")))"),
+        Output(results = listOf("false"))
+    ),
+
     EasyTestCase(
         expressions = listOf("(puts (str (divide 10 2)))"),
         Output(results = listOf("5"))
@@ -78,6 +84,21 @@ val easyTestCases: List<EasyTestCase> = listOf(
     EasyTestCase(
         expressions = listOf("(puts (replace \"Hello World\" \"World\" \"There\")))"),
         Output(results = listOf("Hello There"))
+    ),
+    // Replacement of a single character
+    EasyTestCase(
+        expressions = listOf("(puts (replace \"hello\" \"l\" \"x\"))"),
+        Output(results = listOf("hexxo"))
+    ),
+    // Replacing with an empty string (deletion)
+    EasyTestCase(
+        expressions = listOf("(puts (replace \"hello world\" \"world\" \"\"))"),
+        Output(results = listOf("hello "))
+    ),
+    // Replacing substring that doesn't exist
+    EasyTestCase(
+        expressions = listOf("(puts (replace \"hello world\" \"planet\" \"earth\"))"),
+        Output(results = listOf("hello world"))
     )
 )
 
@@ -197,7 +218,33 @@ val intermediateTestCases: List<IntermediateTestCase> = listOf(
     IntermediateTestCase(
         expressions = listOf("(puts (str (add (subtract (multiply (divide 100 2) (add 10 5)) 25) 10)))"),
         Output(results = listOf("735"))
-    )
+    ),
+    // Overlapping substrings
+    IntermediateTestCase(
+        expressions = listOf("(puts (replace \"abababab\" \"ab\" \"xy\"))"),
+        Output(results = listOf("xyxyxyxy"))
+    ),
+    // Replacing with null
+    IntermediateTestCase(
+        expressions = listOf("(puts (replace \"test string\" null \"null\"))"),
+        Output(results = listOf("ERROR at line 1"))
+    ),
+    // Replace with a combination of replace and concat
+    IntermediateTestCase(
+        expressions = listOf("(puts (replace (concat \"abc\" \"def\") \"bc\" \"xyz\"))"),
+        Output(results = listOf("axyzdef"))
+    ),
+    // Replacing part of a string and nesting it with an arithmetic operation
+    IntermediateTestCase(
+        expressions = listOf("(puts (replace (concat (str (add 100 200)) \" number\") \"300\" \"Three Hundred\"))"),
+        Output(results = listOf("Three Hundred number"))
+    ),
+
+    // Comparing boolean strings with capital letters
+    IntermediateTestCase(
+        expressions = listOf("(puts (str (equal \"True\" \"true\")))"),
+        Output(results = listOf("false"))
+    ),
 
 )
 
@@ -365,5 +412,88 @@ val hardTestCases: List<HardTestCase> = listOf(
             "(puts (str (uppercase (uppercase (uppercase output)))))"
         ),
         Output(results = listOf("result is: 50", "RESULT IS: 55.75"))
+    ),
+    // Deeply nested string comparison with numbers
+    HardTestCase(
+        expressions = listOf(
+            "(set x (str (add 10 20)))", // x = "30"
+            "(set y (str (divide 60 2)))", // y = "30"
+            "(set z (str (multiply 5 6)))", // z = "30"
+            "(puts (str (equal x y)))", // true
+            "(puts (str (equal y z)))", // true
+            "(puts (str (equal z \"30.0\")))", // false
+            "(puts (str (equal z (concat \"3\" \"0\"))))" // true
+        ),
+        Output(results = listOf("true", "true", "false", "true"))
+    ),
+    // Complex boolean and string comparison
+    HardTestCase(
+        expressions = listOf(
+            "(set a (equal true false))", // a = false
+            "(set b (equal false false))", // b = true
+            "(puts (str (equal (str a) (str b))))", // false
+            "(set c (concat \"True\" \"False\"))", // c = "TrueFalse"
+            "(puts (str (equal c \"TrueFalse\")))" // true
+        ),
+        Output(results = listOf("false", "true"))
+    ),
+    // Multiple string and number manipulations with set, concat, and equal
+    HardTestCase(
+        expressions = listOf(
+            "(set x (str (multiply 10 10)))", // x = "100"
+            "(set y (str (divide 200 2)))", // y = "100"
+            "(set z (concat x y))", // z = "100100"
+            "(puts (str (equal z \"100100\")))", // true
+            "(puts (str (equal z (concat x \"100\"))))", // true
+            "(puts (str (equal z \"1000100\")))" // false
+        ),
+        Output(results = listOf("true", "true", "false"))
+    ),
+    // Using set, substring, and equal to compare partial strings
+    HardTestCase(
+        expressions = listOf(
+            "(set str1 \"substring test\")",
+            "(set part (substring str1 0 9))", // part = "substring"
+            "(puts (str (equal part \"substring\")))", // true
+            "(set invalidPart (substring str1 10 20))", // invalid range, should cause error
+            "(puts (str (equal invalidPart \"test\")))"
+        ),
+        Output(results = listOf("true", "ERROR at line 4"))
+    ),
+    // Comparison involving null values and error propagation
+    HardTestCase(
+        expressions = listOf(
+            "(set a null)",
+            "(set b (concat \"null\" \" value\"))", // b = "null value"
+            "(puts (str (equal a b)))", // false
+            "(set c (equal null a))", // c = true
+            "(puts (str (equal (str c) \"true\")))", // true
+            "(puts (str (equal a \"null\")))" // false
+        ),
+        Output(results = listOf("false", "true", "false"))
+    ),
+
+    HardTestCase(
+        expressions = listOf(
+            "(puts (str (add (multiply 2 (subtract 10 (divide 20 2))) (subtract 5 2))))",
+            "(puts (str (subtract (add (multiply 2 3) (divide 10 2)) (divide 5 1))))"
+        ),
+        Output(results = listOf("3", "6"))
+    ),
+
+    HardTestCase(
+        expressions = listOf(
+            "(set x (add (multiply 2 3) (subtract 10 (divide 20 2))))", // x = 6
+            "(set y (divide (add x 10) 2))", // y = 8
+            "(puts (str (multiply y (subtract 50 (divide x 2)))))" // 8 * 47 = 376
+        ),
+        Output(results = listOf("376"))
+    ),
+    HardTestCase(
+        expressions = listOf(
+            "(puts (concat \"Result: \" (str (add (multiply 3 4) (divide 20 (subtract 10 5))))))",
+            "(puts (str (replace \"NestedCalls\" \"Calls\" (concat \"Works\" (str 1)))))"
+        ),
+        Output(results = listOf("Result: 16", "NestedWorks1"))
     ),
 )
