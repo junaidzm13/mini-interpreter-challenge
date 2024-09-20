@@ -402,6 +402,11 @@ Output:
 ERROR at line 1
 ```
 
+## Endpoint
+
+Your application must expose <b>/lisp-parser</b> endpoint which will accept POST requests in the same format as specified
+in the examples below.
+
 
 ## Examples
 
