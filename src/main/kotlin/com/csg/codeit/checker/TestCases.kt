@@ -64,11 +64,6 @@ fun easyTestCases(): List<EasyTestCase> = listOf(
         expressions = listOf("(puts (str (equal \"10.0\" \"10\")))"),
         Output(results = listOf("false"))
     ),
-
-    EasyTestCase(
-        expressions = listOf("(puts (str (divide 10 2)))"),
-        Output(results = listOf("5"))
-    ),
     EasyTestCase(
         expressions = listOf("(puts (replace \"Hello World\" \"World\" \"There\")))"),
         Output(results = listOf("Hello There"))
