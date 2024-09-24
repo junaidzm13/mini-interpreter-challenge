@@ -10,5 +10,5 @@ import kotlin.reflect.KClass
 fun <T : TestCase> List<Expression>.toTestCase(cls: KClass<T>): T {
     val sExpressions = runStringify(this)
     val consoleOutputs = runEvaluate(this)
-    return cls.constructors.single().call(sExpressions, Output(results = consoleOutputs))
+    return cls.constructors.single().call(sExpressions, Output(output = consoleOutputs))
 }

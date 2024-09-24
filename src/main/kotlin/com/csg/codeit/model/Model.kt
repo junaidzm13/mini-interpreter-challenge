@@ -9,7 +9,7 @@ data class ChallengeResult(val score: Int = 0, val message: String = "") {
         copy(score = score + another.score, message = message.ifEmpty { another.message })
 }
 
-typealias ChallengeRun = (ChallengeRequest) -> ChallengeResponse?
+typealias ChallengeRun = (ChallengeRequest) -> Output?
 
 interface Checker {
     fun check(eval: ChallengeRun): ChallengeResult

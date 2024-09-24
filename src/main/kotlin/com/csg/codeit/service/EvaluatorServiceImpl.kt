@@ -18,7 +18,7 @@ class EvaluatorServiceImpl(
         return checker.check(evaluatorDto.asRun())
     }
 
-    private fun convert(rawResponse: String): ChallengeResponse = objectMapper.readValue(rawResponse, ChallengeResponse::class.java)
+    private fun convert(rawResponse: String): Output = objectMapper.readValue(rawResponse, Output::class.java)
 
     private fun TeamEvaluatorDto.asRun(): ChallengeRun = { req ->
         logger.debug("Evaluating {} with: {}", runId, req)

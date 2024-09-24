@@ -30,7 +30,7 @@ class ExpressionTest {
     fun `easy add case`() {
         val testCase = EasyTestCase(
             expressions = listOf("(puts (str (add 1 2)))"),
-            Output(results = listOf("3"))
+            Output(output = listOf("3"))
         )
 
         val l = toScalaSeq<Expression>(IntExpression(1), IntExpression(2))
@@ -44,7 +44,7 @@ class ExpressionTest {
     fun `intermediate math expression add and subtract`() {
         val testCase = IntermediateTestCase(
             expressions = listOf("(puts (str (add (subtract 10 5) 20)))"),
-            Output(results = listOf("25"))
+            Output(output = listOf("25"))
         )
 
         val exp = listOf(
@@ -70,7 +70,7 @@ class ExpressionTest {
                 "(puts (str (divide 5.5 2.0)))",
                 "(puts (str (divide 5 0)))",
             ),
-            Output(results = listOf(
+            Output(output = listOf(
                 "5",
                 "5.0",
                 "2.75",
@@ -100,7 +100,7 @@ class ExpressionTest {
                 "(set output (replace (concat (uppercase (lowercase result)) \".75\") (str 0) (str 5)))",
                 "(puts (str (uppercase (uppercase (uppercase output)))))"
             ),
-            Output(results = listOf("result is: 50", "RESULT IS: 55.75"))
+            Output(output = listOf("result is: 50", "RESULT IS: 55.75"))
         )
 
         val exp = listOf(

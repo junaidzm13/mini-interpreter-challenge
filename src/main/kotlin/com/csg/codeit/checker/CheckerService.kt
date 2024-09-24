@@ -16,9 +16,9 @@ class CheckerService(private val testCaseContainer: TestCaseContainer) : Checker
         .fold(ChallengeResult(), ChallengeResult::plus)
     }
 
-    private fun score(response: ChallengeResponse?, testCase: TestCase): ChallengeResult {
+    private fun score(response: Output?, testCase: TestCase): ChallengeResult {
         return response?.let {
-            ChallengeResult((if (isEqual(actual = it.output, expected = testCase.output)) testCase.difficulty.score else 0))
+            ChallengeResult((if (isEqual(actual = it, expected = testCase.output)) testCase.difficulty.score else 0))
         } ?: ChallengeResult(
             score = 0,
             message = "Incorrect response format for some of the requests, please refer to attached challenge README."
@@ -26,8 +26,8 @@ class CheckerService(private val testCaseContainer: TestCaseContainer) : Checker
     }
 
     private fun isEqual(actual: Output, expected: Output): Boolean {
-        return actual.results.size == expected.results.size &&
-                actual.results.zip(expected.results).all { it.first == it.second }
+        return actual.output.size == expected.output.size &&
+                actual.output.zip(expected.output).all { it.first == it.second }
     }
 
 }

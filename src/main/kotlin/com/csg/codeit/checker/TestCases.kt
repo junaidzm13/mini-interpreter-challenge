@@ -9,52 +9,52 @@ fun easyTestCases(): List<EasyTestCase> = listOf(
     // concatenation
     EasyTestCase(
         expressions = listOf("(puts (concat \"MyParser\" \"IsBest\")))"),
-        Output(results = listOf("MyParserIsBest"))
+        Output(output = listOf("MyParserIsBest"))
     ),
 
     EasyTestCase(
         expressions = listOf("(puts \"Hello World\"))"),
-        Output(results = listOf("Hello World"))
+        Output(output = listOf("Hello World"))
     ),
     EasyTestCase(
         expressions = listOf("(puts (concat \"Hello\" \" World\")))"),
-        Output(results = listOf("Hello World"))
+        Output(output = listOf("Hello World"))
     ),
     EasyTestCase(
         expressions = listOf(
             "(puts (uppercase \"hello\")))",
             "(puts (lowercase \"WORLD\")))"
         ),
-        Output(results = listOf(
+        Output(output = listOf(
             "HELLO",
             "world"
         ))
     ),
     EasyTestCase(
         expressions = listOf("(puts (str (add 1 2)))"),
-        Output(results = listOf("3"))
+        Output(output = listOf("3"))
     ),
     EasyTestCase(
         expressions = listOf(
             "(set x 10)",
             "(puts (str x))"
         ),
-        Output(results = listOf("10"))
+        Output(output = listOf("10"))
     ),
     EasyTestCase(
         expressions = listOf("(puts (str (subtract 5 2)))"),
-        Output(results = listOf("3"))
+        Output(output = listOf("3"))
     ),
     EasyTestCase(
         expressions = listOf("(puts (str (min 3 1 4)))"),
-        Output(results = listOf("1"))
+        Output(output = listOf("1"))
     ),
     EasyTestCase(
         expressions = listOf(
             "(puts (str (equal 5 5)))",
             "(puts (str (equal 5 \"5\"))))"
         ),
-        Output(results = listOf(
+        Output(output = listOf(
             "true",
             "false"
         ))
@@ -62,26 +62,26 @@ fun easyTestCases(): List<EasyTestCase> = listOf(
     // Basic string comparison
     EasyTestCase(
         expressions = listOf("(puts (str (equal \"10.0\" \"10\")))"),
-        Output(results = listOf("false"))
+        Output(output = listOf("false"))
     ),
     EasyTestCase(
         expressions = listOf("(puts (replace \"Hello World\" \"World\" \"There\")))"),
-        Output(results = listOf("Hello There"))
+        Output(output = listOf("Hello There"))
     ),
     // Replacement of a single character
     EasyTestCase(
         expressions = listOf("(puts (replace \"hello\" \"l\" \"x\"))"),
-        Output(results = listOf("hexxo"))
+        Output(output = listOf("hexxo"))
     ),
     // Replacing with an empty string (deletion)
     EasyTestCase(
         expressions = listOf("(puts (replace \"hello world\" \"world\" \"\"))"),
-        Output(results = listOf("hello "))
+        Output(output = listOf("hello "))
     ),
     // Replacing substring that doesn't exist
     EasyTestCase(
         expressions = listOf("(puts (replace \"hello world\" \"planet\" \"earth\"))"),
-        Output(results = listOf("hello world"))
+        Output(output = listOf("hello world"))
     )
 ) + listOf<List<Expression>>(
     // subtraction
@@ -102,47 +102,47 @@ fun easyTestCases(): List<EasyTestCase> = listOf(
 fun intermediateTestCases(): List<IntermediateTestCase> = listOf(
     IntermediateTestCase(
         expressions = listOf("(puts (str (add (subtract 10 5) 20)))"),
-        Output(results = listOf("25"))
+        Output(output = listOf("25"))
     ),
     IntermediateTestCase(
         expressions = listOf(
             "(puts (str (divide 10 2)))",
             "(puts (str (divide 5 0)))"
         ),
-        Output(results = listOf(
+        Output(output = listOf(
             "5",
             "ERROR at line 2"
         ))
     ),
     IntermediateTestCase(
         expressions = listOf("(puts 5)"),
-        Output(results = listOf("ERROR at line 1"))
+        Output(output = listOf("ERROR at line 1"))
     ),
     IntermediateTestCase(
         expressions = listOf(
             "(set x 15)",
             "(puts (str (subtract x 5)))"
         ),
-        Output(results = listOf("10"))
+        Output(output = listOf("10"))
     ),
     IntermediateTestCase(
         expressions = listOf("(puts (concat \"The result is: \" (str (add 5.0 5))))"),
-        Output(results = listOf("The result is: 10.0"))
+        Output(output = listOf("The result is: 10.0"))
     ),
     IntermediateTestCase(
         expressions = listOf("(puts (substring \"abcdef\" 2 5))"),
-        Output(results = listOf("cde"))
+        Output(output = listOf("cde"))
     ),
     IntermediateTestCase(
         expressions = listOf("(puts (substring \"abcdef\" 2 10))"),
-        Output(results = listOf("ERROR at line 1"))
+        Output(output = listOf("ERROR at line 1"))
     ),
     IntermediateTestCase(
         expressions = listOf(
             "(set x 10)",
             "(set x 20)"
         ),
-        Output(results = listOf("ERROR at line 2"))
+        Output(output = listOf("ERROR at line 2"))
     ),
     IntermediateTestCase(
         expressions = listOf(
@@ -150,18 +150,18 @@ fun intermediateTestCases(): List<IntermediateTestCase> = listOf(
             "(puts (str (lt 5 10)))",
             "(puts (str (gt 5 10)))"
         ),
-        Output(results = listOf("true", "true", "false"))
+        Output(output = listOf("true", "true", "false"))
     ),
     IntermediateTestCase(
         expressions = listOf("(puts (uppercase (concat \"hello\" (lowercase \"WORLD\")))))"),
-        Output(results = listOf("HELLOWORLD"))
+        Output(output = listOf("HELLOWORLD"))
     ),
     IntermediateTestCase(
         expressions = listOf(
             "(puts (str (max 3 9 2 5)))",
             "(puts (str (min 3 9 2 5)))"
         ),
-        Output(results = listOf(
+        Output(output = listOf(
             "9",
             "2"
         ))
@@ -172,18 +172,18 @@ fun intermediateTestCases(): List<IntermediateTestCase> = listOf(
             "(puts (str (equal null null)))",
             "(puts (str (not_equal null 0)))"
         ),
-        Output(results = listOf("true", "true", "true"))
+        Output(output = listOf("true", "true", "true"))
     ),
     IntermediateTestCase(
         expressions = listOf("(puts (replace (concat (uppercase \"hello\")) (lowercase \"WORLD\"))) \"LO\" \"XY\")))"),
-        Output(results = listOf("HELXYWORLD"))
+        Output(output = listOf("HELXYWORLD"))
     ),
     IntermediateTestCase(
         expressions = listOf(
             "(puts (str (equal (add 5 5) 10)))",
             "(puts (str (gt (add 5 \"5\")) 10)))"
         ),
-        Output(results = listOf(
+        Output(output = listOf(
             "true",
             "ERROR at line 2"
         ))
@@ -194,53 +194,53 @@ fun intermediateTestCases(): List<IntermediateTestCase> = listOf(
             "(set a (add 10 5))",
             "(puts (str a))"
         ),
-        Output(results = listOf(
+        Output(output = listOf(
             "ERROR at line 3",
             "15"
         ))
     ),
     IntermediateTestCase(
         expressions = listOf("(puts (concat (str (add (subtract 20 10) (multiply 2 3)))) \" is the result\"))"),
-        Output(results = listOf("16 is the result"))
+        Output(output = listOf("16 is the result"))
     ),
     IntermediateTestCase(
         expressions = listOf(
             "(puts (substring \"abcdef\" 0 6))",
             "(puts (substring \"abcdef\" 2 10))"),
-        Output(results = listOf(
+        Output(output = listOf(
             "abcdef",
             "ERROR at line 2"
         ))
     ),
     IntermediateTestCase(
         expressions = listOf("(puts (str (add (subtract (multiply (divide 100 2) (add 10 5)) 25) 10)))"),
-        Output(results = listOf("735"))
+        Output(output = listOf("735"))
     ),
     // Overlapping substrings
     IntermediateTestCase(
         expressions = listOf("(puts (replace \"abababab\" \"ab\" \"xy\"))"),
-        Output(results = listOf("xyxyxyxy"))
+        Output(output = listOf("xyxyxyxy"))
     ),
     // Replacing with null
     IntermediateTestCase(
         expressions = listOf("(puts (replace \"test string\" null \"null\"))"),
-        Output(results = listOf("ERROR at line 1"))
+        Output(output = listOf("ERROR at line 1"))
     ),
     // Replace with a combination of replace and concat
     IntermediateTestCase(
         expressions = listOf("(puts (replace (concat \"abc\" \"def\") \"bc\" \"xyz\"))"),
-        Output(results = listOf("axyzdef"))
+        Output(output = listOf("axyzdef"))
     ),
     // Replacing part of a string and nesting it with an arithmetic operation
     IntermediateTestCase(
         expressions = listOf("(puts (replace (concat (str (add 100 200)) \" number\") \"300\" \"Three Hundred\"))"),
-        Output(results = listOf("Three Hundred number"))
+        Output(output = listOf("Three Hundred number"))
     ),
 
     // Comparing boolean strings with capital letters
     IntermediateTestCase(
         expressions = listOf("(puts (str (equal \"True\" \"true\")))"),
-        Output(results = listOf("false"))
+        Output(output = listOf("false"))
     ),
 
 ) + listOf<List<Expression>>(
@@ -261,7 +261,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(puts (str (divide x 0)))",
             "(puts \"This line should not be printed\"))"
         ),
-        Output(results = listOf(
+        Output(output = listOf(
             "15",
             "ERROR at line 3"
         ))
@@ -273,7 +273,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(puts (add 5 \"5\")))",
             "(puts (subtract 5))"
         ),
-        Output(results = listOf(
+        Output(output = listOf(
             "5",
             "ERROR at line 2"
         ))
@@ -285,7 +285,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(puts (substring \"hello\" 1 3))",
             "(set x 100)"
         ),
-        Output(results = listOf(
+        Output(output = listOf(
             "60",
             "el",
             "ERROR at line 4"
@@ -297,7 +297,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(puts (str (gt (multiply 2 3 4) 20)))",
             "(puts (str (lt (divide 100 5) (multiply 3 3))))"
         ),
-        Output(results = listOf("false", "true", "false"))
+        Output(output = listOf("false", "true", "false"))
     ),
     HardTestCase(
         expressions = listOf(
@@ -308,7 +308,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(puts (concat z \"ing\")))",
             "(set errorTest (concat x 123))"
         ),
-        Output(results = listOf(
+        Output(output = listOf(
             "HARDXYTE",
             "HARDXYTEing",
             "ERROR at line 6"
@@ -325,7 +325,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(set e (add d 50))",
             "(puts (str e))"
         ),
-        Output(results = listOf(
+        Output(output = listOf(
             "0",
             "ERROR at line 5"
         ))
@@ -340,7 +340,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(set invalidOperation (add result 10))",
             "(puts (str invalidOperation))"
         ),
-        Output(results = listOf(
+        Output(output = listOf(
             "Result is: 50",
             "ERROR at line 6"
         ))
@@ -356,7 +356,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(set e (divide c (multiply (subtract c (divide 100 5)) 0)))",
             "(puts (str e))"
         ),
-        Output(results = listOf("ERROR at line 2"))
+        Output(output = listOf("ERROR at line 2"))
     ),
     HardTestCase(
         expressions = listOf(
@@ -372,7 +372,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(set finalResult (divide invalidOp (min (abs b) 0)))",
             "(puts (str finalResult))"
         ),
-        Output(results = listOf("true", "Result: 1000 complex", "ERROR at line 8"))
+        Output(output = listOf("true", "Result: 1000 complex", "ERROR at line 8"))
     ),
     HardTestCase(
         expressions = listOf(
@@ -388,7 +388,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(set g (divide (subtract f a) (add (multiply (subtract 100 50) (divide 200 0)) 10)))",
             "(puts (str g))"
         ),
-        Output(results = listOf("ERROR at line 4"))
+        Output(output = listOf("ERROR at line 4"))
     ),
     HardTestCase(
         expressions = listOf(
@@ -404,7 +404,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(set g (divide (subtract f a) (add (multiply (subtract 100 50) (divide 200 0)) 10)))",
             "(puts (str g))"
         ),
-        Output(results = listOf("false", "93100 Nightmare", "ERROR at line 8"))
+        Output(output = listOf("false", "93100 Nightmare", "ERROR at line 8"))
     ),
     HardTestCase(
         expressions = listOf(
@@ -416,7 +416,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(set output (replace (concat (uppercase (lowercase result)) \".75\") (str 0) (str 5)))", // output := "RESULT IS: 55.75"
             "(puts (str (uppercase (uppercase (uppercase output)))))"
         ),
-        Output(results = listOf("result is: 50", "RESULT IS: 55.75"))
+        Output(output = listOf("result is: 50", "RESULT IS: 55.75"))
     ),
     // Deeply nested string comparison with numbers
     HardTestCase(
@@ -429,7 +429,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(puts (str (equal z \"30.0\")))", // false
             "(puts (str (equal z (concat \"3\" \"0\"))))" // true
         ),
-        Output(results = listOf("true", "true", "false", "true"))
+        Output(output = listOf("true", "true", "false", "true"))
     ),
     // Complex boolean and string comparison
     HardTestCase(
@@ -440,7 +440,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(set c (concat \"True\" \"False\"))", // c = "TrueFalse"
             "(puts (str (equal c \"TrueFalse\")))" // true
         ),
-        Output(results = listOf("false", "true"))
+        Output(output = listOf("false", "true"))
     ),
     // Multiple string and number manipulations with set, concat, and equal
     HardTestCase(
@@ -452,7 +452,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(puts (str (equal z (concat x \"100\"))))", // true
             "(puts (str (equal z \"1000100\")))" // false
         ),
-        Output(results = listOf("true", "true", "false"))
+        Output(output = listOf("true", "true", "false"))
     ),
     // Using set, substring, and equal to compare partial strings
     HardTestCase(
@@ -463,7 +463,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(set invalidPart (substring str1 10 20))", // invalid range, should cause error
             "(puts (str (equal invalidPart \"test\")))"
         ),
-        Output(results = listOf("true", "ERROR at line 4"))
+        Output(output = listOf("true", "ERROR at line 4"))
     ),
     // Comparison involving null values and error propagation
     HardTestCase(
@@ -475,7 +475,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(puts (str (equal (str c) \"true\")))", // true
             "(puts (str (equal a \"null\")))" // false
         ),
-        Output(results = listOf("false", "true", "false"))
+        Output(output = listOf("false", "true", "false"))
     ),
 
     HardTestCase(
@@ -483,7 +483,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(puts (str (add (multiply 2 (subtract 10 (divide 20 2))) (subtract 5 2))))",
             "(puts (str (subtract (add (multiply 2 3) (divide 10 2)) (divide 5 1))))"
         ),
-        Output(results = listOf("3", "6"))
+        Output(output = listOf("3", "6"))
     ),
 
     HardTestCase(
@@ -492,14 +492,14 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(set y (divide (add x 10) 2))", // y = 8
             "(puts (str (multiply y (subtract 50 (divide x 2)))))" // 8 * 47 = 376
         ),
-        Output(results = listOf("376"))
+        Output(output = listOf("376"))
     ),
     HardTestCase(
         expressions = listOf(
             "(puts (concat \"Result: \" (str (add (multiply 3 4) (divide 20 (subtract 10 5))))))",
             "(puts (str (replace \"NestedCalls\" \"Calls\" (concat \"Works\" (str 1)))))"
         ),
-        Output(results = listOf("Result: 16", "NestedWorks1"))
+        Output(output = listOf("Result: 16", "NestedWorks1"))
     ),
 
     HardTestCase(
@@ -508,7 +508,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(puts (replace x (str (divide 250 10)) (str (multiply 2 3))))", // replace "25" with "6"
             "(puts (concat (uppercase x) \" TEST\"))" // "250 TEST"
         ),
-        Output(results = listOf("60", "150 TEST"))
+        Output(output = listOf("60", "150 TEST"))
     ),
     HardTestCase(
         expressions = listOf(
@@ -516,7 +516,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(puts (substring a (subtract (multiply 2 3) 4) (add 3 3)))", // substring of last 4 characters
             "(puts (str (not_equal a 30)))" // true
         ),
-        Output(results = listOf("BESB", "true"))
+        Output(output = listOf("BESB", "true"))
     ),
     HardTestCase(
         expressions = listOf(
@@ -524,7 +524,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(puts (concat (str (equal x 10)) \" isEqual\"))", // "true isEqual"
             "(puts (str (add x (replace (str 10) \"10\" \"5\"))))" // should raise error
         ),
-        Output(results = listOf("true isEqual", "ERROR at line 3"))
+        Output(output = listOf("true isEqual", "ERROR at line 3"))
     ),
 
     HardTestCase(
@@ -534,7 +534,7 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(puts (str (add (multiply x y) (divide 100 5))))", // 20 * 18 + 20 = 380
             "(puts (concat (uppercase (str y)) \" FINAL\"))" // 18 FINAL
         ),
-        Output(results = listOf("380", "18 FINAL"))
+        Output(output = listOf("380", "18 FINAL"))
     ),
     HardTestCase(
         expressions = listOf(
@@ -544,6 +544,6 @@ fun hardTestCases(): List<HardTestCase> = listOf(
             "(puts (str (equal a 80)))", // true
             "(puts (concat b \" Complete\"))" // "80 test Complete"
         ),
-        Output(results = listOf("25 test", "true", "80 test Complete"))
+        Output(output = listOf("25 test", "true", "80 test Complete"))
     )
 )

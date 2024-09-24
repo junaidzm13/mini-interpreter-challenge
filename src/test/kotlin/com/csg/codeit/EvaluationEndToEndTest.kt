@@ -7,6 +7,7 @@ import com.csg.codeit.model.*
 import com.csg.codeit.service.CoordinatorService
 import com.csg.codeit.service.EvaluatorServiceImpl
 import com.csg.codeit.service.WebClient
+import com.fasterxml.jackson.module.kotlin.readValue
 import io.mockk.every
 import io.mockk.mockk
 import okhttp3.mockwebserver.Dispatcher
@@ -14,6 +15,7 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -44,13 +46,22 @@ internal class EvaluationEndToEndTest {
     fun `can evaluate team when correct response`() {
         val expectedEvaluationResult = EvaluationResultRequest(RUN_ID, TEST_CASE.difficulty.score, "")
 
+        val responseJson = """
+                        {
+                            "output": [
+                                "5"
+                            ]
+                        }
+                    """.trimIndent()
+
         setMockServerResponses(
             mockTeamResponse = MockResponse()
                 .setResponseCode(200)
-                .setBody(objectMapper.writeValueAsString(ChallengeResponse(Output(listOf("5"))))),
+                .setBody(responseJson),
             expectedEvaluationResultRequest = expectedEvaluationResult
         )
 
+        assertThat(Output(listOf("5"))).isEqualTo(objectMapper.readValue<Output>(responseJson))
         assertThat(coordinatorService(getEvalReq())).isEqualTo(expectedEvaluationResult)
     }
 
@@ -58,27 +69,41 @@ internal class EvaluationEndToEndTest {
     fun `can evaluate team when incorrect response`() {
         val expectedEvaluationResult = EvaluationResultRequest(RUN_ID, 0, "")
 
+        val responseJson = """
+                        {
+                            "output": [
+                                "5.5"
+                            ]
+                        }
+                    """.trimIndent()
+
         setMockServerResponses(
             mockTeamResponse = MockResponse()
                 .setResponseCode(200)
-                .setBody(objectMapper.writeValueAsString(ChallengeResponse(Output(listOf("5.5"))))),
+                .setBody(responseJson),
             expectedEvaluationResultRequest = expectedEvaluationResult
         )
 
+        assertThat(Output(listOf("5.5"))).isEqualTo(objectMapper.readValue<Output>(responseJson))
         assertThat(coordinatorService(getEvalReq())).isEqualTo(expectedEvaluationResult)
     }
 
     @Test
     fun `can evaluate team when response format is incorrect`() {
         val expectedEvaluationResult = EvaluationResultRequest(RUN_ID, 0, "Incorrect response format for some of the requests, please refer to attached challenge README.")
+        val responseJson = """
+                        {
+                            "incorrectFormat": "5"
+                        }
+                    """.trimIndent()
 
         setMockServerResponses(
             mockTeamResponse = MockResponse()
                 .setResponseCode(200)
-                .setBody(objectMapper.writeValueAsString("5")),
+                .setBody(responseJson),
             expectedEvaluationResultRequest = expectedEvaluationResult
         )
-
+        assertThatThrownBy { objectMapper.readValue<Output>(responseJson) }
         assertThat(coordinatorService(getEvalReq())).isEqualTo(expectedEvaluationResult)
     }
 

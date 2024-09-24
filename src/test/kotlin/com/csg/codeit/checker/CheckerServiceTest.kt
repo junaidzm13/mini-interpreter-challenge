@@ -19,7 +19,7 @@ class CheckerServiceTest {
     fun `test 'check' method`(name: String, actual: List<String>, expected: List<String>, isEqual: Boolean) {
         every { testCaseContainer.getTestCases() } returns listOf(mockTestCase(expected))
 
-        val mockRun: ChallengeRun = { ChallengeResponse(Output(actual)) }
+        val mockRun: ChallengeRun = { Output(actual) }
         val res = checkerService.check(mockRun)
 
         assertThat(res).isEqualTo(challengeResult(if (isEqual) 1 else 0))

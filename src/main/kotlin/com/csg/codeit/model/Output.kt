@@ -1,3 +1,3 @@
 package com.csg.codeit.model
 
-data class Output(val results: List<String>)
+data class Output(val output: List<String>)
