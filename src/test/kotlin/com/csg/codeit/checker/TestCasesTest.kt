@@ -20,7 +20,8 @@ class TestCasesTest {
         fun casesSource(): Stream<Arguments> {
             return Stream.of(
                 Arguments.of(legacyEasyTestCases(), convertedEasyTestCases()),
-                Arguments.of(legacyIntermediateTestCases(), convertedIntermediateTestCases())
+                Arguments.of(legacyIntermediateTestCases(), convertedIntermediateTestCases()),
+                Arguments.of(legacyHardTestCases(), convertedHardTestCases())
             )
         }
 
