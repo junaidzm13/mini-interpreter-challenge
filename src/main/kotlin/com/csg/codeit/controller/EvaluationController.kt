@@ -1,13 +1,9 @@
 package com.csg.codeit.controller
 
 import com.csg.codeit.*
-import com.csg.codeit.checker.EasyTestCase
-import com.csg.codeit.checker.IntermediateTestCase
-import com.csg.codeit.checker.TestCase
-import com.csg.codeit.checker.easyTestCases
-import com.csg.codeit.expression.toTestCase
+import com.csg.codeit.expression.ExpressionGeneratorUtils.runEvaluate
+import com.csg.codeit.expression.ExpressionGeneratorUtils.runStringify
 import com.csg.codeit.model.EvaluationRequest
-import com.csg.codeit.model.Output
 import com.csg.codeit.service.CoordinatorService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,16 +25,21 @@ class EvaluationController(private val coordinatorService: CoordinatorService) {
         ResponseEntity<Void>(HttpStatus.ACCEPTED).also { coroutineScope.launch { coordinatorService(evaluationRequest) } }
 
     @GetMapping(value = ["/examples"])
-    fun example(): ResponseEntity<List<TestCase>> =
-        ResponseEntity<List<TestCase>>(
-            listOf(
-                listOf(
-                    SetExpression("x", IntExpression(15)),
-                    PutsExpression(StrExpression(SubtractExpression(VarExpression("x"), IntExpression(5))))
-                ),
-                listOf(PutsExpression(ConcatExpression(StringExpression("Hello"), StringExpression(" World!")))),
-                listOf(PutsExpression(StrExpression(EqualsExpression(StringExpression("10.5"), StringExpression("10")))))
-            ).map {it.toTestCase<EasyTestCase>() },
-            HttpStatus.OK
-        )
+    fun example(): ResponseEntity<List<Example>> = ResponseEntity<List<Example>>(EXAMPLES, HttpStatus.OK)
+
+    data class Example(val expressions: List<String>, val output: List<String>)
 }
+
+private val EXAMPLES = listOf(
+    listOf(
+        SetExpression("x", IntExpression(15)),
+        PutsExpression(StrExpression(SubtractExpression(VarExpression("x"), IntExpression(5))))
+    ),
+    listOf(PutsExpression(ConcatExpression(StringExpression("Hello"), StringExpression(" World!")))),
+    listOf(PutsExpression(StrExpression(EqualsExpression(StringExpression("10.5"), StringExpression("10")))))
+).map { it.toExample() }
+
+private fun List<Expression>.toExample(): EvaluationController.Example = EvaluationController.Example(
+    expressions = runStringify(this),
+    output = runEvaluate(this)
+)
