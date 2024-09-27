@@ -5,85 +5,9 @@ import com.csg.codeit.expression.ExpressionGeneratorUtils.ScalaUtils.toScalaSeq
 import com.csg.codeit.expression.toTestCase
 import com.csg.codeit.model.Output
 
-fun easyTestCases(): List<EasyTestCase> = listOf(
-    // concatenation
-    EasyTestCase(
-        expressions = listOf("(puts (concat \"MyParser\" \"IsBest\")))"),
-        Output(output = listOf("MyParserIsBest"))
-    ),
 
-    EasyTestCase(
-        expressions = listOf("(puts \"Hello World\"))"),
-        Output(output = listOf("Hello World"))
-    ),
-    EasyTestCase(
-        expressions = listOf("(puts (concat \"Hello\" \" World\")))"),
-        Output(output = listOf("Hello World"))
-    ),
-    EasyTestCase(
-        expressions = listOf(
-            "(puts (uppercase \"hello\")))",
-            "(puts (lowercase \"WORLD\")))"
-        ),
-        Output(output = listOf(
-            "HELLO",
-            "world"
-        ))
-    ),
-    EasyTestCase(
-        expressions = listOf("(puts (str (add 1 2)))"),
-        Output(output = listOf("3"))
-    ),
-    EasyTestCase(
-        expressions = listOf(
-            "(set x 10)",
-            "(puts (str x))"
-        ),
-        Output(output = listOf("10"))
-    ),
-    EasyTestCase(
-        expressions = listOf("(puts (str (subtract 5 2)))"),
-        Output(output = listOf("3"))
-    ),
-    EasyTestCase(
-        expressions = listOf("(puts (str (min 3 1 4)))"),
-        Output(output = listOf("1"))
-    ),
-    EasyTestCase(
-        expressions = listOf(
-            "(puts (str (equal 5 5)))",
-            "(puts (str (equal 5 \"5\"))))"
-        ),
-        Output(output = listOf(
-            "true",
-            "false"
-        ))
-    ),
-    // Basic string comparison
-    EasyTestCase(
-        expressions = listOf("(puts (str (equal \"10.0\" \"10\")))"),
-        Output(output = listOf("false"))
-    ),
-    EasyTestCase(
-        expressions = listOf("(puts (replace \"Hello World\" \"World\" \"There\")))"),
-        Output(output = listOf("Hello There"))
-    ),
-    // Replacement of a single character
-    EasyTestCase(
-        expressions = listOf("(puts (replace \"hello\" \"l\" \"x\"))"),
-        Output(output = listOf("hexxo"))
-    ),
-    // Replacing with an empty string (deletion)
-    EasyTestCase(
-        expressions = listOf("(puts (replace \"hello world\" \"world\" \"\"))"),
-        Output(output = listOf("hello "))
-    ),
-    // Replacing substring that doesn't exist
-    EasyTestCase(
-        expressions = listOf("(puts (replace \"hello world\" \"planet\" \"earth\"))"),
-        Output(output = listOf("hello world"))
-    )
-) + listOf<List<Expression>>(
+fun easyTestCases(): List<EasyTestCase> = convertedEasyTestCases()  +  listOf<List<Expression>>(
+
     // subtraction
     listOf(PutsExpression(StrExpression(SubtractExpression(DoubleExpression(15.5), DoubleExpression(4.0))))),
     listOf(PutsExpression(StrExpression(SubtractExpression(IntExpression(1), IntExpression(2))))),
@@ -97,153 +21,10 @@ fun easyTestCases(): List<EasyTestCase> = listOf(
     listOf(PutsExpression(StrExpression(DivideExpression(DoubleExpression(650.25), DoubleExpression(5.0))))),
     listOf(PutsExpression(StrExpression(DivideExpression(IntExpression(10), IntExpression(4))))),
     listOf(PutsExpression(StrExpression(DivideExpression(IntExpression(1), IntExpression(2))))),
-).map { it.toTestCase(EasyTestCase::class) }
+).map { it.toTestCase<EasyTestCase>() }
 
-fun intermediateTestCases(): List<IntermediateTestCase> = listOf(
-    IntermediateTestCase(
-        expressions = listOf("(puts (str (add (subtract 10 5) 20)))"),
-        Output(output = listOf("25"))
-    ),
-    IntermediateTestCase(
-        expressions = listOf(
-            "(puts (str (divide 10 2)))",
-            "(puts (str (divide 5 0)))"
-        ),
-        Output(output = listOf(
-            "5",
-            "ERROR at line 2"
-        ))
-    ),
-    IntermediateTestCase(
-        expressions = listOf("(puts 5)"),
-        Output(output = listOf("ERROR at line 1"))
-    ),
-    IntermediateTestCase(
-        expressions = listOf(
-            "(set x 15)",
-            "(puts (str (subtract x 5)))"
-        ),
-        Output(output = listOf("10"))
-    ),
-    IntermediateTestCase(
-        expressions = listOf("(puts (concat \"The result is: \" (str (add 5.0 5))))"),
-        Output(output = listOf("The result is: 10.0"))
-    ),
-    IntermediateTestCase(
-        expressions = listOf("(puts (substring \"abcdef\" 2 5))"),
-        Output(output = listOf("cde"))
-    ),
-    IntermediateTestCase(
-        expressions = listOf("(puts (substring \"abcdef\" 2 10))"),
-        Output(output = listOf("ERROR at line 1"))
-    ),
-    IntermediateTestCase(
-        expressions = listOf(
-            "(set x 10)",
-            "(set x 20)"
-        ),
-        Output(output = listOf("ERROR at line 2"))
-    ),
-    IntermediateTestCase(
-        expressions = listOf(
-            "(puts (str (gt 10 5)))",
-            "(puts (str (lt 5 10)))",
-            "(puts (str (gt 5 10)))"
-        ),
-        Output(output = listOf("true", "true", "false"))
-    ),
-    IntermediateTestCase(
-        expressions = listOf("(puts (uppercase (concat \"hello\" (lowercase \"WORLD\")))))"),
-        Output(output = listOf("HELLOWORLD"))
-    ),
-    IntermediateTestCase(
-        expressions = listOf(
-            "(puts (str (max 3 9 2 5)))",
-            "(puts (str (min 3 9 2 5)))"
-        ),
-        Output(output = listOf(
-            "9",
-            "2"
-        ))
-    ),
-    IntermediateTestCase(
-        expressions = listOf(
-            "(puts (str (equal true true)))",
-            "(puts (str (equal null null)))",
-            "(puts (str (not_equal null 0)))"
-        ),
-        Output(output = listOf("true", "true", "true"))
-    ),
-    IntermediateTestCase(
-        expressions = listOf("(puts (replace (concat (uppercase \"hello\")) (lowercase \"WORLD\"))) \"LO\" \"XY\")))"),
-        Output(output = listOf("HELXYWORLD"))
-    ),
-    IntermediateTestCase(
-        expressions = listOf(
-            "(puts (str (equal (add 5 5) 10)))",
-            "(puts (str (gt (add 5 \"5\")) 10)))"
-        ),
-        Output(output = listOf(
-            "true",
-            "ERROR at line 2"
-        ))
-    ),
-    IntermediateTestCase(
-        expressions = listOf(
-            "(puts \"ERROR at line 3\"))",
-            "(set a (add 10 5))",
-            "(puts (str a))"
-        ),
-        Output(output = listOf(
-            "ERROR at line 3",
-            "15"
-        ))
-    ),
-    IntermediateTestCase(
-        expressions = listOf("(puts (concat (str (add (subtract 20 10) (multiply 2 3)))) \" is the result\"))"),
-        Output(output = listOf("16 is the result"))
-    ),
-    IntermediateTestCase(
-        expressions = listOf(
-            "(puts (substring \"abcdef\" 0 6))",
-            "(puts (substring \"abcdef\" 2 10))"),
-        Output(output = listOf(
-            "abcdef",
-            "ERROR at line 2"
-        ))
-    ),
-    IntermediateTestCase(
-        expressions = listOf("(puts (str (add (subtract (multiply (divide 100 2) (add 10 5)) 25) 10)))"),
-        Output(output = listOf("735"))
-    ),
-    // Overlapping substrings
-    IntermediateTestCase(
-        expressions = listOf("(puts (replace \"abababab\" \"ab\" \"xy\"))"),
-        Output(output = listOf("xyxyxyxy"))
-    ),
-    // Replacing with null
-    IntermediateTestCase(
-        expressions = listOf("(puts (replace \"test string\" null \"null\"))"),
-        Output(output = listOf("ERROR at line 1"))
-    ),
-    // Replace with a combination of replace and concat
-    IntermediateTestCase(
-        expressions = listOf("(puts (replace (concat \"abc\" \"def\") \"bc\" \"xyz\"))"),
-        Output(output = listOf("axyzdef"))
-    ),
-    // Replacing part of a string and nesting it with an arithmetic operation
-    IntermediateTestCase(
-        expressions = listOf("(puts (replace (concat (str (add 100 200)) \" number\") \"300\" \"Three Hundred\"))"),
-        Output(output = listOf("Three Hundred number"))
-    ),
+fun intermediateTestCases(): List<IntermediateTestCase> = convertedIntermediateTestCases() + listOf<List<Expression>>(
 
-    // Comparing boolean strings with capital letters
-    IntermediateTestCase(
-        expressions = listOf("(puts (str (equal \"True\" \"true\")))"),
-        Output(output = listOf("false"))
-    ),
-
-) + listOf<List<Expression>>(
     // Different cases for division
     listOf(
         PutsExpression(StrExpression(DivideExpression(IntExpression(10), IntExpression(2)))),
@@ -251,7 +32,7 @@ fun intermediateTestCases(): List<IntermediateTestCase> = listOf(
         PutsExpression(StrExpression(DivideExpression(DoubleExpression(5.5), DoubleExpression(2.0)))),
         PutsExpression(StrExpression(DivideExpression(IntExpression(5), IntExpression(0)))),
     ).shuffled()
-).map { it.toTestCase(IntermediateTestCase::class) }
+).map { it.toTestCase<IntermediateTestCase>() }
 
 fun hardTestCases(): List<HardTestCase> = listOf(
     HardTestCase(
@@ -546,4 +327,431 @@ fun hardTestCases(): List<HardTestCase> = listOf(
         ),
         Output(output = listOf("25 test", "true", "80 test Complete"))
     )
+)
+
+
+
+fun convertedEasyTestCases(): List<EasyTestCase> {
+    return listOf<List<Expression>>(
+        listOf(PutsExpression(
+            ConcatExpression(
+                StringExpression("MyParser"),
+                StringExpression("IsBest")
+            )
+        )),
+        listOf(PutsExpression(StringExpression("Hello World"))),
+        listOf(PutsExpression(ConcatExpression(StringExpression("Hello"), StringExpression(" World")))),
+        listOf(
+            PutsExpression(UppercaseExpression(StringExpression("hello"))),
+            PutsExpression(LowercaseExpression(StringExpression("WORLD")))
+        ),
+
+        listOf(PutsExpression(StrExpression(AddExpression(toScalaSeq(IntExpression(1), IntExpression(2)))))),
+
+        listOf(
+            SetExpression("x", IntExpression(10)),
+            PutsExpression(StrExpression(VarExpression("x")))
+        ),
+
+        listOf(PutsExpression(StrExpression(SubtractExpression(IntExpression(5), IntExpression(2))))),
+
+        listOf(PutsExpression(StrExpression(MinExpression(toScalaSeq(IntExpression(3), IntExpression(1), IntExpression(4)))))),
+
+        listOf(
+            PutsExpression(StrExpression(EqualsExpression(IntExpression(5), IntExpression(5)))),
+            PutsExpression(StrExpression(EqualsExpression(IntExpression(5), StringExpression("5"))))
+        ),
+
+        listOf(
+            PutsExpression(StrExpression(EqualsExpression(StringExpression("10.0"), StringExpression("10"))))
+        ),
+
+        listOf(PutsExpression(ReplaceExpression(StringExpression("Hello World"), StringExpression("World"), StringExpression("There")))
+        ),
+
+        listOf(PutsExpression(ReplaceExpression(StringExpression("hello"), StringExpression("l"), StringExpression("x")))),
+
+        listOf(PutsExpression(ReplaceExpression(StringExpression("hello world"), StringExpression("world"), StringExpression("")))),
+
+        listOf(PutsExpression(ReplaceExpression(StringExpression("hello world"), StringExpression("planet"), StringExpression("earth"))))
+    ).map{ it.toTestCase<EasyTestCase>() }
+}
+
+fun convertedIntermediateTestCases(): List<IntermediateTestCase> {
+    return listOf(
+        listOf(
+            PutsExpression(StrExpression(AddExpression(toScalaSeq(SubtractExpression(IntExpression(10), IntExpression(5)), IntExpression(20)))))
+        ),
+
+        listOf(
+            PutsExpression(StrExpression(DivideExpression(IntExpression(10), IntExpression(2)))),
+            PutsExpression(StrExpression(DivideExpression(IntExpression(5), IntExpression(0))))
+        ),
+
+        listOf(
+            PutsExpression(IntExpression(5))
+        ),
+
+        listOf(
+            SetExpression("x", IntExpression(15)),
+            PutsExpression(StrExpression(SubtractExpression(VarExpression("x"), IntExpression(5))))
+        ),
+
+        listOf(
+            PutsExpression(ConcatExpression(
+                StringExpression("The result is: "),
+                StrExpression(AddExpression(toScalaSeq(DoubleExpression(5.0), DoubleExpression(5.0))))
+            ))
+        ),
+
+        listOf(PutsExpression(SubstringExpression(StringExpression("abcdef"), IntExpression(2), IntExpression(10)))),
+
+        listOf(
+            PutsExpression(SubstringExpression(StringExpression("abcdef"), IntExpression(2), IntExpression(5)))
+        ),
+
+        listOf(
+            SetExpression("x", IntExpression(10)),
+            SetExpression("x", IntExpression(20))
+        ),
+
+        listOf(
+            PutsExpression(StrExpression(GtExpression(IntExpression(10), IntExpression(5)))),
+            PutsExpression(StrExpression(LtExpression(IntExpression(5), IntExpression(10)))),
+            PutsExpression(StrExpression(GtExpression(IntExpression(5), IntExpression(10))))
+        ),
+
+        listOf(
+            PutsExpression(UppercaseExpression(ConcatExpression(StringExpression("hello"), LowercaseExpression(StringExpression("WORLD")))))
+        ),
+
+        listOf(
+            PutsExpression(StrExpression(MaxExpression(toScalaSeq(IntExpression(3), IntExpression(9), IntExpression(2), IntExpression(5))))),
+            PutsExpression(StrExpression(MinExpression(toScalaSeq(IntExpression(3), IntExpression(9), IntExpression(2), IntExpression(5)))))
+        ),
+
+        listOf(
+            PutsExpression(StrExpression(EqualsExpression(BooleanExpression(true), BooleanExpression(true)))),
+            PutsExpression(StrExpression(EqualsExpression(NullExpression(), NullExpression()))),
+            PutsExpression(StrExpression(NotEqualsExpression(NullExpression(), IntExpression(0))))
+        ),
+
+        listOf(
+            PutsExpression(ReplaceExpression(
+                ConcatExpression(
+                    UppercaseExpression(StringExpression("hello")),
+                    LowercaseExpression(StringExpression("WORLD"))
+                ),
+                StringExpression("LO"),
+                StringExpression("XY")
+            ))
+        ),
+
+        listOf(
+            PutsExpression(StrExpression(EqualsExpression(AddExpression(toScalaSeq(IntExpression(5), IntExpression(5))), IntExpression(10)))),
+            PutsExpression(StrExpression(GtExpression(AddExpression(toScalaSeq(IntExpression(5), StringExpression("5"))), IntExpression(10))))
+        ),
+
+        listOf(
+            PutsExpression(StringExpression("ERROR at line 3")),
+            SetExpression("a", AddExpression(toScalaSeq(IntExpression(10), IntExpression(5)))),
+            PutsExpression(StrExpression(VarExpression("a")))
+        ),
+
+        listOf(
+            PutsExpression(
+                ConcatExpression(
+                    StrExpression(
+                        AddExpression(
+                            toScalaSeq(
+                                SubtractExpression(IntExpression(20), IntExpression(10)),
+                                MultiplyExpression(toScalaSeq(IntExpression(2), IntExpression(3))))
+                        )
+                    ),
+                    StringExpression(" is the result"),
+                )
+            )
+        ),
+
+        listOf(
+            PutsExpression(SubstringExpression(StringExpression("abcdef"), IntExpression(0), IntExpression(6))),
+            PutsExpression(SubstringExpression(StringExpression("abcdef"), IntExpression(2), IntExpression(10)))
+        ),
+
+        listOf(
+            PutsExpression(
+                StrExpression(
+                    AddExpression(
+                        toScalaSeq(
+                            SubtractExpression(
+                                MultiplyExpression(
+                                    toScalaSeq(
+                                        DivideExpression(IntExpression(100), IntExpression(2)),
+                                        AddExpression(toScalaSeq(IntExpression(10), IntExpression(5)))
+                                    )
+                                ),
+                                IntExpression(25)
+                            ),
+                            IntExpression(10)))
+                )
+            )
+        ),
+
+        listOf(
+            PutsExpression(ReplaceExpression(StringExpression("abababab"), StringExpression("ab"), StringExpression("xy")))
+        ),
+
+        listOf(
+            PutsExpression(ReplaceExpression(StringExpression("test string"), NullExpression(), StringExpression("null")))
+        ),
+
+        listOf(
+            PutsExpression(ReplaceExpression(ConcatExpression(StringExpression("abc"), StringExpression("def")), StringExpression("bc"), StringExpression("xyz")))
+        ),
+
+        listOf(
+            PutsExpression(
+                ReplaceExpression(
+                    ConcatExpression(
+                        StrExpression(
+                            AddExpression(toScalaSeq(IntExpression(100), IntExpression(200)))
+                        ),
+                        StringExpression(" number")
+                    ),
+                    StringExpression("300"),
+                    StringExpression("Three Hundred")
+                ))
+        ),
+
+        listOf(
+            PutsExpression(StrExpression(EqualsExpression(StringExpression("True"), StringExpression("true"))))
+        ),
+    ).map { it.toTestCase<IntermediateTestCase>() }
+}
+
+@Deprecated("Do not use unless really necessary")
+fun legacyEasyTestCases(): List<EasyTestCase> = listOf(
+    // concatenation
+    EasyTestCase(
+        expressions = listOf("(puts (concat \"MyParser\" \"IsBest\"))"),
+        Output(output = listOf("MyParserIsBest"))
+    ),
+
+    EasyTestCase(
+        expressions = listOf("(puts \"Hello World\")"),
+        Output(output = listOf("Hello World"))
+    ),
+    EasyTestCase(
+        expressions = listOf("(puts (concat \"Hello\" \" World\"))"),
+        Output(output = listOf("Hello World"))
+    ),
+    EasyTestCase(
+        expressions = listOf(
+            "(puts (uppercase \"hello\"))",
+            "(puts (lowercase \"WORLD\"))"
+        ),
+        Output(output = listOf(
+            "HELLO",
+            "world"
+        ))
+    ),
+    EasyTestCase(
+        expressions = listOf("(puts (str (add 1 2)))"),
+        Output(output = listOf("3"))
+    ),
+    EasyTestCase(
+        expressions = listOf(
+            "(set x 10)",
+            "(puts (str x))"
+        ),
+        Output(output = listOf("10"))
+    ),
+    EasyTestCase(
+        expressions = listOf("(puts (str (subtract 5 2)))"),
+        Output(output = listOf("3"))
+    ),
+    EasyTestCase(
+        expressions = listOf("(puts (str (min 3 1 4)))"),
+        Output(output = listOf("1"))
+    ),
+    EasyTestCase(
+        expressions = listOf(
+            "(puts (str (equal 5 5)))",
+            "(puts (str (equal 5 \"5\")))"
+        ),
+        Output(output = listOf(
+            "true",
+            "false"
+        ))
+    ),
+    // Basic string comparison
+    EasyTestCase(
+        expressions = listOf("(puts (str (equal \"10.0\" \"10\")))"),
+        Output(output = listOf("false"))
+    ),
+    EasyTestCase(
+        expressions = listOf("(puts (replace \"Hello World\" \"World\" \"There\"))"),
+        Output(output = listOf("Hello There"))
+    ),
+    // Replacement of a single character
+    EasyTestCase(
+        expressions = listOf("(puts (replace \"hello\" \"l\" \"x\"))"),
+        Output(output = listOf("hexxo"))
+    ),
+    // Replacing with an empty string (deletion)
+    EasyTestCase(
+        expressions = listOf("(puts (replace \"hello world\" \"world\" \"\"))"),
+        Output(output = listOf("hello "))
+    ),
+    // Replacing substring that doesn't exist
+    EasyTestCase(
+        expressions = listOf("(puts (replace \"hello world\" \"planet\" \"earth\"))"),
+        Output(output = listOf("hello world"))
+    )
+)
+
+@Deprecated("Deprecated because I said so")
+fun legacyIntermediateTestCases(): List<IntermediateTestCase> = listOf(
+    IntermediateTestCase(
+        expressions = listOf("(puts (str (add (subtract 10 5) 20)))"),
+        Output(output = listOf("25"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf(
+            "(puts (str (divide 10 2)))",
+            "(puts (str (divide 5 0)))"
+        ),
+        Output(output = listOf(
+            "5",
+            "ERROR at line 2"
+        ))
+    ),
+    IntermediateTestCase(
+        expressions = listOf("(puts 5)"),
+        Output(output = listOf("ERROR at line 1"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf(
+            "(set x 15)",
+            "(puts (str (subtract x 5)))"
+        ),
+        Output(output = listOf("10"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf("(puts (concat \"The result is: \" (str (add 5.0 5.0))))"),
+        Output(output = listOf("The result is: 10.0"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf("(puts (substring \"abcdef\" 2 10))"),
+        Output(output = listOf("ERROR at line 1"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf("(puts (substring \"abcdef\" 2 5))"),
+        Output(output = listOf("cde"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf(
+            "(set x 10)",
+            "(set x 20)"
+        ),
+        Output(output = listOf("ERROR at line 2"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf(
+            "(puts (str (gt 10 5)))",
+            "(puts (str (lt 5 10)))",
+            "(puts (str (gt 5 10)))"
+        ),
+        Output(output = listOf("true", "true", "false"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf("(puts (uppercase (concat \"hello\" (lowercase \"WORLD\"))))"),
+        Output(output = listOf("HELLOWORLD"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf(
+            "(puts (str (max 3 9 2 5)))",
+            "(puts (str (min 3 9 2 5)))"
+        ),
+        Output(output = listOf(
+            "9",
+            "2"
+        ))
+    ),
+    IntermediateTestCase(
+        expressions = listOf(
+            "(puts (str (equal true true)))",
+            "(puts (str (equal null null)))",
+            "(puts (str (not_equal null 0)))"
+        ),
+        Output(output = listOf("true", "true", "true"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf("(puts (replace (concat (uppercase \"hello\") (lowercase \"WORLD\")) \"LO\" \"XY\"))"),
+        Output(output = listOf("HELXYworld"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf(
+            "(puts (str (equal (add 5 5) 10)))",
+            "(puts (str (gt (add 5 \"5\") 10)))"
+        ),
+        Output(output = listOf(
+            "true",
+            "ERROR at line 2"
+        ))
+    ),
+    IntermediateTestCase(
+        expressions = listOf(
+            "(puts \"ERROR at line 3\")",
+            "(set a (add 10 5))",
+            "(puts (str a))"
+        ),
+        Output(output = listOf(
+            "ERROR at line 3",
+            "15"
+        ))
+    ),
+    IntermediateTestCase(
+        expressions = listOf("(puts (concat (str (add (subtract 20 10) (multiply 2 3))) \" is the result\"))"),
+        Output(output = listOf("16 is the result"))
+    ),
+    IntermediateTestCase(
+        expressions = listOf(
+            "(puts (substring \"abcdef\" 0 6))",
+            "(puts (substring \"abcdef\" 2 10))"),
+        Output(output = listOf(
+            "abcdef",
+            "ERROR at line 2"
+        ))
+    ),
+    IntermediateTestCase(
+        expressions = listOf("(puts (str (add (subtract (multiply (divide 100 2) (add 10 5)) 25) 10)))"),
+        Output(output = listOf("735"))
+    ),
+    // Overlapping substrings
+    IntermediateTestCase(
+        expressions = listOf("(puts (replace \"abababab\" \"ab\" \"xy\"))"),
+        Output(output = listOf("xyxyxyxy"))
+    ),
+    // Replacing with null
+    IntermediateTestCase(
+        expressions = listOf("(puts (replace \"test string\" null \"null\"))"),
+        Output(output = listOf("ERROR at line 1"))
+    ),
+    // Replace with a combination of replace and concat
+    IntermediateTestCase(
+        expressions = listOf("(puts (replace (concat \"abc\" \"def\") \"bc\" \"xyz\"))"),
+        Output(output = listOf("axyzdef"))
+    ),
+    // Replacing part of a string and nesting it with an arithmetic operation
+    IntermediateTestCase(
+        expressions = listOf("(puts (replace (concat (str (add 100 200)) \" number\") \"300\" \"Three Hundred\"))"),
+        Output(output = listOf("Three Hundred number"))
+    ),
+
+    // Comparing boolean strings with capital letters
+    IntermediateTestCase(
+        expressions = listOf("(puts (str (equal \"True\" \"true\")))"),
+        Output(output = listOf("false"))
+    ),
 )

@@ -36,7 +36,7 @@ class ExpressionTest {
         val l = toScalaSeq<Expression>(IntExpression(1), IntExpression(2))
         val exp = listOf(PutsExpression(StrExpression(AddExpression(l))))
 
-        assertThat(testCase).isEqualTo(exp.toTestCase(EasyTestCase::class))
+        assertThat(testCase).isEqualTo(exp.toTestCase<EasyTestCase>())
     }
 
 
@@ -58,7 +58,7 @@ class ExpressionTest {
             )
         )
 
-        assertThat(testCase).isEqualTo(exp.toTestCase(IntermediateTestCase::class))
+        assertThat(testCase).isEqualTo(exp.toTestCase<IntermediateTestCase>())
     }
 
     @Test
@@ -85,7 +85,7 @@ class ExpressionTest {
             PutsExpression(StrExpression(DivideExpression(IntExpression(5), IntExpression(0)))),
         )
 
-        assertThat(testCase).isEqualTo(exp.toTestCase(IntermediateTestCase::class))
+        assertThat(testCase).isEqualTo(exp.toTestCase<IntermediateTestCase>())
     }
 
     @Test
@@ -120,6 +120,6 @@ class ExpressionTest {
             PutsExpression(StrExpression(UppercaseExpression(UppercaseExpression(UppercaseExpression(VarExpression("output")))))),
         )
 
-        assertThat(testCase).isEqualTo(exp.toTestCase(HardTestCase::class))
+        assertThat(testCase).isEqualTo(exp.toTestCase<HardTestCase>())
     }
 }

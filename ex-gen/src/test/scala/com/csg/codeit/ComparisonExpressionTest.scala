@@ -96,7 +96,7 @@ class ComparisonExpressionTest {
     @Test
     def `can stringify`(): Unit = {
       val e = NotEqualsExpression(IntExpression(5), DoubleExpression(5.5))
-      assertThat(e.toString).isEqualTo("(non_equal 5 5.5)")
+      assertThat(e.toString).isEqualTo("(not_equal 5 5.5)")
     }
   }
 

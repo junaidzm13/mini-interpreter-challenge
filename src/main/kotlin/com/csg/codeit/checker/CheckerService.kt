@@ -17,12 +17,20 @@ class CheckerService(private val testCaseContainer: TestCaseContainer) : Checker
     }
 
     private fun score(response: Output?, testCase: TestCase): ChallengeResult {
-        return response?.let {
-            ChallengeResult((if (isEqual(actual = it, expected = testCase.output)) testCase.difficulty.score else 0))
-        } ?: ChallengeResult(
-            score = 0,
-            message = "Incorrect response format for some of the requests, please refer to attached challenge README."
-        )
+        return if (response != null) {
+            val score = if (isEqual(actual = response, expected = testCase.output)) testCase.difficulty.score else 0
+            if (score == 0) {
+                logger.info("[SCORE] Incorrect response: {} for input expression {}, expected: {}", response.output, testCase.expressions, testCase.output)
+            }
+            ChallengeResult(
+                score = score
+            )
+        } else {
+            ChallengeResult(
+                score = 0,
+                message = "Incorrect response format for some of the requests, please refer to attached challenge README."
+            )
+        }
     }
 
     private fun isEqual(actual: Output, expected: Output): Boolean {

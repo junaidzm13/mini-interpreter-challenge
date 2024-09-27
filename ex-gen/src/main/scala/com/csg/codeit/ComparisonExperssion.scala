@@ -25,7 +25,7 @@ case class NotEqualsExpression(private val e1: Expression, private val e2: Expre
       case (a, b)  => a != b
     }
 
-  override def toString: String = s"(non_equal $e1 $e2)"
+  override def toString: String = s"(not_equal $e1 $e2)"
 }
 
 case class GtExpression(private val e1: Expression, private val e2: Expression) extends RangeOpExpression(RangeOp.GT)(e1, e2)
