@@ -155,6 +155,12 @@ class MathOpExpressionTest {
           DivideExpression(StringExpression("25.25"), StringExpression("4.75")),
         )
       }
+
+      @Test
+      def `rounds up result to 4dps`(): Unit = {
+        assertEqual((DivideExpression(DoubleExpression(10), IntExpression(3)), 3.3333))
+        assertEqual((DivideExpression(DoubleExpression(10.55555), IntExpression(3)), 3.5185))
+      }
     }
 
     @Nested
@@ -201,6 +207,12 @@ class MathOpExpressionTest {
           SubtractExpression(IntExpression(20), BooleanExpression(true)),
           SubtractExpression(StringExpression("25.25"), StringExpression("4.75")),
         )
+      }
+
+      @Test
+      def `rounds up result to 4dps`(): Unit = {
+        assertEqual((SubtractExpression(DoubleExpression(4.55555), IntExpression(0)), 4.5556))
+        assertEqual((SubtractExpression(DoubleExpression(10.555549), IntExpression(3)), 7.5555))
       }
     }
   }

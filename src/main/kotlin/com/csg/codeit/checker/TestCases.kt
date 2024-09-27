@@ -31,7 +31,17 @@ fun intermediateTestCases(): List<IntermediateTestCase> = convertedIntermediateT
         PutsExpression(StrExpression(DivideExpression(IntExpression(10), DoubleExpression(2.0)))),
         PutsExpression(StrExpression(DivideExpression(DoubleExpression(5.5), DoubleExpression(2.0)))),
         PutsExpression(StrExpression(DivideExpression(IntExpression(5), IntExpression(0)))),
-    ).shuffled()
+    ).shuffled(),
+
+    // nested puts
+    listOf(
+        PutsExpression(StrExpression(
+            EqualsExpression(
+                PutsExpression(RandomLiteralExGen.str(minLength = 100)),
+                PutsExpression(RandomLiteralExGen.str(minLength = 100))
+            )
+        ))
+    ),
 ).map { it.toTestCase<IntermediateTestCase>() }
 
 fun hardTestCases(): List<HardTestCase> = listOf(
@@ -329,7 +339,67 @@ fun hardTestCases(): List<HardTestCase> = listOf(
     )
 )
 
+fun superHardTestCases(): List<HardTestCase> = listOf<List<Expression>>(
+    listOf(
+        PutsExpression(StrExpression(EqualsExpression(PutsExpression(LowercaseExpression(RandomLiteralExGen.str(minLength = 50))), PutsExpression(UppercaseExpression(RandomLiteralExGen.str(minLength = 50)))))),
+        PutsExpression(StrExpression(DivideExpression(RandomLiteralExGen.int(), RandomLiteralExGen.int()))),
+        PutsExpression(StrExpression(DivideExpression(RandomLiteralExGen.int(), RandomLiteralExGen.double()))),
+        PutsExpression(StrExpression(SubtractExpression(RandomLiteralExGen.int(), RandomLiteralExGen.double()))),
+        PutsExpression(StrExpression(AddExpression(toScalaSeq(*(1..20).map { RandomLiteralExGen.int() }.toTypedArray())))),
+        PutsExpression(StrExpression(MaxExpression(toScalaSeq(*(1..20).map { RandomLiteralExGen.double() }.toTypedArray())))),
+        PutsExpression(StrExpression(MinExpression(toScalaSeq(*(1..20).map { RandomLiteralExGen.double() }.toTypedArray())))),
+        PutsExpression(StrExpression(MultiplyExpression(toScalaSeq(*(1..20).map { RandomLiteralExGen.int() }.toTypedArray())))),
+        PutsExpression(StrExpression(AbsExpression(RandomLiteralExGen.int()))),
+        SetExpression("someInteger", RandomLiteralExGen.int())
+    ).shuffled() + listOf(
+        PutsExpression(ConcatExpression(StrExpression(VarExpression("someInteger")), UppercaseExpression(StringExpression("o00000oo00000o")))),
+        PutsExpression(SubtractExpression(VarExpression("someInteger"), RandomLiteralExGen.double()))
+    ),
 
+    // extreme mathematical operations
+    listOf(
+        PutsExpression(StrExpression(DivideExpression(RandomLiteralExGen.int(), RandomLiteralExGen.int()))),
+        PutsExpression(StrExpression(AddExpression(toScalaSeq(*(1..100).map { RandomLiteralExGen.int() }.toTypedArray())))),
+        PutsExpression(StrExpression(MaxExpression(toScalaSeq(*(1..100).map { RandomLiteralExGen.double() }.toTypedArray())))),
+        PutsExpression(StrExpression(MinExpression(toScalaSeq(*(1..100).map { RandomLiteralExGen.double() }.toTypedArray())))),
+        PutsExpression(StrExpression(MultiplyExpression(toScalaSeq(*(1..100).map { RandomLiteralExGen.int() }.toTypedArray())))),
+        PutsExpression(UppercaseExpression(StrExpression(GtExpression(
+            MultiplyExpression(toScalaSeq(*(1..30).map { RandomLiteralExGen.int() }.toTypedArray())),
+            AddExpression(toScalaSeq(*(1..100).map { RandomLiteralExGen.double() }.toTypedArray()))
+        )))),
+        PutsExpression(UppercaseExpression(StrExpression(LtExpression(
+            MaxExpression(toScalaSeq(*(1..10).map { RandomLiteralExGen.int() }.toTypedArray())),
+            AbsExpression(MinExpression(toScalaSeq(*(1..10).map { RandomLiteralExGen.double() }.toTypedArray())))
+        )))),
+    ).shuffled() + listOf(
+        PutsExpression(StrExpression(ConcatExpression(
+            ConcatExpression(RandomLiteralExGen.str(minLength = 100), RandomLiteralExGen.str(minLength = 100)),
+            StrExpression(DivideExpression(RandomLiteralExGen.int(), IntExpression(0)))
+        ))),
+    ),
+
+    // extreme string operations
+    listOf(
+        PutsExpression(ConcatExpression(
+            ConcatExpression(RandomLiteralExGen.str(minLength = 100), RandomLiteralExGen.str(minLength = 100)),
+            LowercaseExpression(RandomLiteralExGen.str(minLength = 5, maxLength = 10))
+        )),
+        PutsExpression(StrExpression(SubstringExpression(
+            ConcatExpression(
+                ConcatExpression(RandomLiteralExGen.str(maxLength = 10), RandomLiteralExGen.str(maxLength = 10)),
+                LowercaseExpression(RandomLiteralExGen.str(minLength = 5, maxLength = 10))
+            ),
+            MinExpression(toScalaSeq(AbsExpression(MultiplyExpression(toScalaSeq(*(1..100).map { RandomLiteralExGen.int() }.toTypedArray()))), IntExpression(0))),
+            MinExpression(toScalaSeq(AbsExpression(AddExpression(toScalaSeq(*(1..100).map { RandomLiteralExGen.int() }.toTypedArray()))), IntExpression(5))),
+        ))),
+        SetExpression("varA", ConcatExpression(RandomLiteralExGen.str(minLength = 50), RandomLiteralExGen.str(minLength = 50))),
+        SetExpression("varB", LowercaseExpression(ConcatExpression(RandomLiteralExGen.str(minLength = 50), RandomLiteralExGen.str(minLength = 50)))),
+    ).shuffled() + listOf(
+        PutsExpression(ReplaceExpression(VarExpression("varA"), StringExpression("a"), StringExpression("varA"))),
+        PutsExpression(ReplaceExpression(VarExpression("varA"), StringExpression("b"), StringExpression("varB"))),
+        PutsExpression(ReplaceExpression(LowercaseExpression(VarExpression("varA")), StringExpression("a"), StringExpression("varA"))),
+    ),
+).map { it.toTestCase<HardTestCase>() }
 
 fun convertedEasyTestCases(): List<EasyTestCase> {
     return listOf<List<Expression>>(

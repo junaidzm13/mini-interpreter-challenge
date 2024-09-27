@@ -1,5 +1,6 @@
 package com.csg.codeit.checker
 
+import com.csg.codeit.config.objectMapper
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -11,4 +12,9 @@ class TestCasesManualTest {
         easyTestCases().forEach { println(it) }
     }
 
+
+    @Test
+    fun `super hard test cases`() {
+        superHardTestCases().forEach { println(objectMapper.writeValueAsString(it)) }
+    }
 }

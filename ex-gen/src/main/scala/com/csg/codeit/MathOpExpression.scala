@@ -4,7 +4,16 @@ import com.csg.codeit.Expression.EvaluationError
 import com.csg.codeit.model.Context
 import com.csg.codeit.utils.isNumber
 
-trait MathOpExpression extends Expression
+sealed trait MathOpExpression extends Expression {
+  override final def evaluate(ctx: Context): Any = mathEval(ctx) match {
+    case d: Double => roundUpTo4Dp(d)
+    case any       => any
+  }
+
+  def mathEval(ctx: Context): Any
+
+  private def roundUpTo4Dp(d: Double): Double = BigDecimal(d).setScale(4, BigDecimal.RoundingMode.HALF_UP).toDouble
+}
 
 // Var args math operations
 case class AddExpression(private val args: Expression*) extends VarArgMathOpExpression(VarArgMathOp.ADD)(args: _*)
@@ -13,7 +22,7 @@ case class MaxExpression(private val args: Expression*) extends VarArgMathOpExpr
 case class MinExpression(private val args: Expression*) extends VarArgMathOpExpression(VarArgMathOp.MIN)(args: _*)
 
 abstract class VarArgMathOpExpression(val op: VarArgMathOp)(private val args: Expression*) extends MathOpExpression {
-  override def evaluate(ctx: Context): Any = {
+  override def mathEval(ctx: Context): Any = {
     if (args.length < 2) throw EvaluationError(s"Args to ${op.name} should be at least 2.")
 
     var allIntegers = true
@@ -43,7 +52,7 @@ case class SubtractExpression(private val e1: Expression, private val e2: Expres
 case class DivideExpression(private val e1: Expression, private val e2: Expression) extends TwoArgMathOpExpression(TwoArgMathOp.DIVIDE)(e1, e2)
 
 abstract class TwoArgMathOpExpression(val op: TwoArgMathOp)(private val a1: Expression, private val a2: Expression) extends MathOpExpression {
-  override def evaluate(ctx: Context): Any = {
+  override def mathEval(ctx: Context): Any = {
     (a1.evaluate(ctx), a2.evaluate(ctx)) match {
       case (i1: Int, i2: Int) => op.apply(i1, i2).toInt
       case (n1, n2) if isNumber(n1) && isNumber(n2) => op.apply(n1.toString.toDouble, n2.toString.toDouble)
@@ -62,7 +71,7 @@ object TwoArgMathOp {
 
 // 1 arg math operation
 case class AbsExpression(private val e: Expression) extends MathOpExpression {
-  override def evaluate(ctx: Context): Any = e.evaluate(ctx) match {
+  override def mathEval(ctx: Context): Any = e.evaluate(ctx) match {
     case i: Int => Math.abs(i)
     case d: Double => Math.abs(d)
     case _ => throw EvaluationError(s"Arg to `abs` did not evaluate to a number.")

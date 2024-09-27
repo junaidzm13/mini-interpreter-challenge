@@ -136,6 +136,8 @@ When at least one of the indices is out of bounds an error is thrown.
 
 ### Number operations
 
+*NOTE: Each function below should return result accurate to 4 dps.*
+
 #### Addition
 
 `add` function accepts at least 2 arguments of numeric type and returns a new number by adding all arguments.
@@ -211,7 +213,7 @@ Example:
 // returns 0.5
 ```
 
-### Absolute value
+#### Absolute value
 
 `abs` function accepts a single argument of numeric type. Returns an absolute value of the provided argument. Providing an argument of a type other than number will result in an error.
 
@@ -228,7 +230,7 @@ Example:
 ```
 
 
-#### Largest value among arguments
+#### Max
 
 `max` function accepts a variable number of arguments (at least 2) of numeric type. Returns the largest number among the provided arguments. 
 
@@ -248,7 +250,7 @@ Example:
 // returns 5
 ```
 
-#### Smallest value among arguments
+#### Min
 
 `min` function accepts a variable number of arguments (at least 2) of numeric type. Returns the smallest number among the provided arguments. 
 
@@ -268,7 +270,7 @@ Example:
 // returns 1
 ```
 
-#### Greater
+#### Greater than
 
 `gt` function accepts 2 numeric arguments. Returns `true` if the first argument has greater value than the second, otherwise returns `false`.
 
@@ -288,7 +290,7 @@ Example:
 // returns true
 ```
 
-#### Smaller
+#### Lower than
 
 `lt` function accepts 2 numeric arguments. Returns `true` if the first argument has smaller value than the second, otherwise returns `false`. 
 
@@ -408,7 +410,7 @@ Your application must expose <b>/lisp-parser</b> endpoint which will accept POST
 in the examples below.
 
 
-## Examples
+## Examples (viewable at `/examples`)
 
 ### Case 1
 
@@ -423,6 +425,18 @@ Expected result:
 Hello World
 5
 ABC true
+```
+
+### Case 2
+
+```
+(set v "Hello World")
+(puts (concat v ", Student"))
+```
+
+Expected result:
+```
+Hello World, Student
 ```
 
 ## Input format
