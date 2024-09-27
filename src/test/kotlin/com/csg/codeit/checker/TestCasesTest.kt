@@ -10,7 +10,7 @@ class TestCasesTest {
 
     @ParameterizedTest
     @MethodSource("casesSource")
-    fun `test cases are converted correctly`(legacyTestCases: List<out TestCase>, convertedTestCases: List<out TestCase>) {
+    fun `test cases are converted correctly`(legacyTestCases: List<TestCase>, convertedTestCases: List<TestCase>) {
         assertEquals(legacyTestCases, convertedTestCases)
     }
 
@@ -20,8 +20,8 @@ class TestCasesTest {
         fun casesSource(): Stream<Arguments> {
             return Stream.of(
                 Arguments.of(legacyEasyTestCases(), convertedEasyTestCases()),
-                Arguments.of(legacyIntermediateTestCases(), convertedIntermediateTestCases()),
-                Arguments.of(legacyHardTestCases(), convertedHardTestCases())
+                Arguments.of(legacyIntermediateTestCases(), convertedLegacyIntermediateTestCases()),
+                Arguments.of(legacyHardTestCases(), convertedLegacyHardTestCases())
             )
         }
 

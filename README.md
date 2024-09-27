@@ -36,7 +36,7 @@ Hello world
 
 `set` function accepts a variable name and a single argument of any type. Returns `null`.
 Only constants are supported. Value assignment can be performed with `set` method.
-Constant names will be given in lowercase only. 
+Constant names will be given in camel case containing only alphabets.
 
 Example:
 
