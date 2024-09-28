@@ -9,9 +9,9 @@ import java.math.RoundingMode
 import kotlin.random.Random
 
 object RandomLiteralExGen {
-    fun int(): IntExpression = Random.nextInt(-ONE_MILLION, ONE_MILLION).let(::IntExpression)
+    fun int(scale: Int = TEN_THOUSAND): IntExpression = Random.nextInt(-scale, scale).let(::IntExpression)
 
-    fun double(): DoubleExpression = Random.nextDouble(-ONE_MILLION.toDouble(), ONE_MILLION.toDouble()).let{
+    fun double(scale: Int = TEN_THOUSAND): DoubleExpression = Random.nextDouble(-scale.toDouble(), scale.toDouble()).let{
         BigDecimal.valueOf(it).setScale(4, RoundingMode.HALF_UP).toDouble()
     }.let(::DoubleExpression)
 
@@ -34,5 +34,5 @@ object RandomLiteralExGen {
         return c
     }
 
-    private const val ONE_MILLION: Int = 1_000_000
+    private const val TEN_THOUSAND: Int = 10_000
 }
