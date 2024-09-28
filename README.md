@@ -38,7 +38,7 @@ Output:
 Hello world
 ```
 
-### Constants
+### Variable assignment
 
 `set` function accepts a constant variable name and a single argument of any type. Returns `null`.
 Variable names will be given in camel case containing only alphabets.
@@ -387,7 +387,7 @@ Examples:
 
 ### Error Handling
 
-All errors are unrecoverable. Once the error occurs, the error message is printed to the console immediately.
+All errors are unrecoverable (i.e. the evaluation stops on the first error). Once the error occurs, the error message is printed to the console.
 The error message contains a String `ERROR at line ` and line number where error was raised.
 
 Example:

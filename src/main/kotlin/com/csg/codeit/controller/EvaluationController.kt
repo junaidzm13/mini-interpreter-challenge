@@ -1,6 +1,7 @@
 package com.csg.codeit.controller
 
 import com.csg.codeit.*
+import com.csg.codeit.checker.RandomLiteralExGen
 import com.csg.codeit.expression.ExpressionGeneratorUtils.runEvaluate
 import com.csg.codeit.expression.ExpressionGeneratorUtils.runStringify
 import com.csg.codeit.model.EvaluationRequest
@@ -36,7 +37,15 @@ private val EXAMPLES = listOf(
         PutsExpression(StrExpression(SubtractExpression(VarExpression("x"), IntExpression(5))))
     ),
     listOf(PutsExpression(ConcatExpression(StringExpression("Hello"), StringExpression(" World!")))),
-    listOf(PutsExpression(StrExpression(EqualsExpression(StringExpression("10.5"), StringExpression("10")))))
+    listOf(PutsExpression(StrExpression(EqualsExpression(StringExpression("10.5"), StringExpression("10"))))),
+    listOf(
+        PutsExpression(StringExpression("Not an error!")),
+        PutsExpression(IntExpression(10)),
+    ),
+    listOf(
+        PutsExpression(StrExpression(DivideExpression(RandomLiteralExGen.double(), RandomLiteralExGen.int()))),
+        PutsExpression(StrExpression(DivideExpression(RandomLiteralExGen.double(), IntExpression(0))))
+    ),
 ).map { it.toExample() }
 
 private fun List<Expression>.toExample(): EvaluationController.Example = EvaluationController.Example(
