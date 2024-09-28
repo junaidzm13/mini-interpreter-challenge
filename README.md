@@ -35,7 +35,7 @@ Input:
 
 Output:
 ```
-Hello world
+hello world
 ```
 
 ### Variable assignment
