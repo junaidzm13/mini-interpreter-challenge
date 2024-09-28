@@ -2,6 +2,7 @@ package com.csg.codeit.checker
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.xmlunit.diff.Diff
 
 class TestCaseContainerTest {
 
@@ -15,8 +16,6 @@ class TestCaseContainerTest {
         assertThat(totalScore).isEqualTo(100)
 
         val testsByDifficulty = testCases.groupBy { it.difficulty }
-        assertThat(testsByDifficulty[Difficulty.Easy]).hasSize(10)
-        assertThat(testsByDifficulty[Difficulty.Intermediate]).hasSize(15)
-        assertThat(testsByDifficulty[Difficulty.Hard]).hasSize(20)
+        Difficulty.values().forEach { assertThat(testsByDifficulty[it]).hasSize(it.numCases) }
     }
 }
