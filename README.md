@@ -241,7 +241,7 @@ Providing an argument of a type other than number will result in an error.
 Example:
 
 ```
-(max 1)
+(max 1 -2)
 // returns 1
 ```
 
@@ -261,7 +261,7 @@ Providing an argument of a type other than number will result in an error.
 Example:
 
 ```
-(min 1)
+(min 1 2)
 // returns 1
 ```
 
