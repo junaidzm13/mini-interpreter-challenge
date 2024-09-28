@@ -15,6 +15,12 @@ Assumptions:
 - No semicolons at the end of the line.
 - `//` in the examples is used to denote a comment. It will not appear in the actual code.
 
+### Supported data types:
+- String: provided in double quotes (`"`)
+- Boolean: `true` and `false`
+- Number: can be integer or decimal.
+- null
+
 ### Printing to console
 
 Can be done with method `puts` which accepts a single String argument. Providing an argument of any type other than String will result in an error.
@@ -34,9 +40,8 @@ Hello world
 
 ### Constants
 
-`set` function accepts a variable name and a single argument of any type. Returns `null`.
-Only constants are supported. Value assignment can be performed with `set` method.
-Constant names will be given in camel case containing only alphabets.
+`set` function accepts a constant variable name and a single argument of any type. Returns `null`.
+Variable names will be given in camel case containing only alphabets.
 
 Example:
 
@@ -44,13 +49,7 @@ Example:
 (set x 5)
 ```
 
-Assigning a new value to an existing constant will result in an error. Incorrect order of the arguments will result in an error.
-
-### Supported data types:
-- String: provided in double quotes (`"`)
-- Boolean: `true` and `false`
-- Number: can be integer or decimal.
-- null
+Assigning a new value to an existing variable will result in an error. Incorrect order of the arguments will result in an error.
 
 ### String operations
 
@@ -66,7 +65,7 @@ Example:
 // returns: "abc"
 ```
 
-#### Lower case
+#### Lowercase
 
 `lowercase` function returns a copy of an input String converted to lower case. Providing an argument of any type other than String will result in an error.
 
@@ -77,7 +76,7 @@ Example:
 
 ```
 
-#### Upper case
+#### Uppercase
 `uppercase` function returns a copy of an input String converted to upper case. Providing an argument of any other type than string will result in an error.
 
 
