@@ -12,23 +12,23 @@ class CheckerService(private val testCaseContainer: TestCaseContainer) : Checker
     override fun check(eval: ChallengeRun): ChallengeResult {
         return testCaseContainer.getTestCases()
         .map { Pair(eval(ChallengeRequest(expressions = it.expressions)), it)}
-        .map { score(it.first, it.second) }
+        .mapIndexed { idx, tc -> score(tc.first, tc.second, idx + 1) }
         .fold(ChallengeResult(), ChallengeResult::plus)
     }
 
-    private fun score(response: Output?, testCase: TestCase): ChallengeResult {
+    private fun score(response: Output?, testCase: TestCase, position: Int): ChallengeResult {
+        val msgPrefix = "TestCase $position"
         return if (response != null) {
-            val score = if (isEqual(actual = response, expected = testCase.output)) testCase.difficulty.score else 0
-            if (score == 0) {
+            if (isEqual(actual = response, expected = testCase.output)) {
+                ChallengeResult(score = testCase.difficulty.score, message = "$msgPrefix - Passed")
+            } else {
                 logger.info("[SCORE] Incorrect response: {} for input expression {}, expected: {}", response.output, testCase.expressions, testCase.output)
+                ChallengeResult(score = 0, message = "$msgPrefix - Failed")
             }
-            ChallengeResult(
-                score = score
-            )
         } else {
             ChallengeResult(
                 score = 0,
-                message = "Incorrect response format for some of the requests, please refer to attached challenge README."
+                message = "$msgPrefix - Incorrect response format"
             )
         }
     }

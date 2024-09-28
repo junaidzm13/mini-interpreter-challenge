@@ -22,14 +22,18 @@ class CheckerServiceTest {
         val mockRun: ChallengeRun = { Output(actual) }
         val res = checkerService.check(mockRun)
 
-        assertThat(res).isEqualTo(challengeResult(if (isEqual) 1 else 0))
+        assertThat(res).isEqualTo(
+            if (isEqual) challengeResult(score = 1, message = "TestCase 1 - Passed")
+            else challengeResult(score = 0, message = "TestCase 1 - Failed")
+        )
     }
 
     private fun mockTestCase(result: List<String>): TestCase {
         return EasyTestCase(expressions = listOf("some-expression"), output = Output(result))
     }
 
-    private fun challengeResult(score: Int, message: String = "") = ChallengeResult(score = score, message = message)
+    private fun challengeResult(score: Int, message: String = "") =
+        ChallengeResult(score = score, message = message)
 
     companion object {
         @JvmStatic

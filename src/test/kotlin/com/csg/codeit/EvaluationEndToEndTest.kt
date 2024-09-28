@@ -44,7 +44,7 @@ internal class EvaluationEndToEndTest {
 
     @Test
     fun `can evaluate team when correct response`() {
-        val expectedEvaluationResult = EvaluationResultRequest(RUN_ID, TEST_CASE.difficulty.score, "")
+        val expectedEvaluationResult = EvaluationResultRequest(RUN_ID, TEST_CASE.difficulty.score, "TestCase 1 - Passed")
 
         val responseJson = """
                         {
@@ -67,7 +67,7 @@ internal class EvaluationEndToEndTest {
 
     @Test
     fun `can evaluate team when incorrect response`() {
-        val expectedEvaluationResult = EvaluationResultRequest(RUN_ID, 0, "")
+        val expectedEvaluationResult = EvaluationResultRequest(RUN_ID, 0, "TestCase 1 - Failed")
 
         val responseJson = """
                         {
@@ -90,7 +90,7 @@ internal class EvaluationEndToEndTest {
 
     @Test
     fun `can evaluate team when response format is incorrect`() {
-        val expectedEvaluationResult = EvaluationResultRequest(RUN_ID, 0, "Incorrect response format for some of the requests, please refer to attached challenge README.")
+        val expectedEvaluationResult = EvaluationResultRequest(RUN_ID, 0, "TestCase 1 - Incorrect response format")
         val responseJson = """
                         {
                             "incorrectFormat": "5"

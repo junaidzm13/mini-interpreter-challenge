@@ -5,8 +5,10 @@ interface RequestPayload
 data class ChallengeRequest(val expressions: List<String>) : RequestPayload
 
 data class ChallengeResult(val score: Int = 0, val message: String = "") {
-    operator fun plus(another: ChallengeResult) =
-        copy(score = score + another.score, message = message.ifEmpty { another.message })
+    operator fun plus(another: ChallengeResult) = copy(
+        score = score + another.score,
+        message = listOf(message, another.message).filter { it != "" }.joinToString(", ")
+    )
 }
 
 typealias ChallengeRun = (ChallengeRequest) -> Output?
