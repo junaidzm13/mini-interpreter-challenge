@@ -2,7 +2,7 @@ package com.csg.codeit
 
 import com.csg.codeit.model.Context
 
-abstract class LiteralExpression[T](value: T) extends Expression {
+abstract class LiteralExpression[+T](value: T) extends Expression {
   override def evaluate(ctx: Context): T = value
   override def toString: String = value.toString
 }
