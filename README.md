@@ -1,3 +1,10 @@
+*A lisp like interpreter coding challenge I developed for my company's 2025 campus recruitment hackathon.*
+*It's built using Scala, Kotlin and SpringBoot and uses GitLab CI for continuous integration. Can also find my own solution to the problem inside `ex-gen` (short for expression generator).*
+
+*Note: Students highly appreciated the problem as it forced them to think outside their usual imperative programming approach.*
+
+[Original GitLab repository](https://gitlab.com/junaidzm13/lisp-language-parser-challenge)
+
 ## Problem statement
 
 You are given multiple lines of code written in a made up lisp-like programming language.
